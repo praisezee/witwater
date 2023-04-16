@@ -1,0 +1,47 @@
+@font-face {
+      font-family: percifico;
+      src: url(./assets/fonts/Pacifico/Pacifico-Regular.ttf);
+}
+body{
+      min-height: 100vh;
+      display: flex;
+
+}
+
+#root{
+      flex-grow: 1;
+      display: flex;
+}
+
+.f-percifico{
+      font-family: percifico;
+      letter-spacing: 4px;
+}
+.vh-75{
+      height: 75vh !important;
+}
+.expand:hover{
+      transition: all 1s  linear;
+      scale: 1.2;
+      cursor: pointer;
+}
+
+.flex-item{
+      display: flex;
+      overflow: auto;
+}
+.img-container{
+      overflow: hidden;
+}
+
+.center{
+      display: grid;
+      place-content: center;
+}
+
+.vh-75{
+      height: 75vh !important;
+}
+.vh-50{
+      height: 50vh !important;
+}
