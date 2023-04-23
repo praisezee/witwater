@@ -7,7 +7,7 @@ const DashHome = () =>
 {
   const {posts} = useContext(DashboardContext)
   return (
-    <Container fluid>
+    <Container fluid className='Main'>
       { posts.length ? (
         <div>
           {
@@ -18,7 +18,7 @@ const DashHome = () =>
                 <p>{ post.message }</p>
                 { post.image ? (
                   <Col>
-                    <img src={post.image} alt="post image" />
+                    <img src={post.image} alt="postimage" />
                   </Col>
                 ) : null}
               </Col>

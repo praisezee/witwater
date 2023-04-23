@@ -15,6 +15,7 @@ import Influencer from './Components/Influencer'
 import DashboardLayout from "./Components/Dashboard/DashboardLayout";
 import DashHome from './Components/Dashboard/DashHome'
 import NewPost from './Components/Dashboard/NewPost'
+import Chat from './Components/Dashboard/Chat'
 import { DashboardProvider } from "./Components/context/Context";
 
 function App() {
@@ -42,7 +43,8 @@ function App() {
         </Route>
         <Route path="dashboard" element={<DashboardLayout/>}>
           <Route index element={<DashHome/>}/>
-          <Route path="new-post" element={<NewPost/>}/>
+          <Route path="new-post" element={ <NewPost /> } />
+          <Route path="chat" element={<Chat/>}/>
         </Route>
       </Routes>
     </DashboardProvider>

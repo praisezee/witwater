@@ -6,7 +6,7 @@ import DashboardFooter from './DashboardFooter';
 
 const DashboardLayout = () => {
   return (
-    <div className='d-flex flex-column vh-100 w-100'>
+    <div className='d-flex vh-100 flex-column flex-grow-1'>
       <DashBoardHeader />
       <div className="flex-grow-1 overflow-y-auto">
         <Outlet />

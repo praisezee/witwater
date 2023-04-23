@@ -4,7 +4,7 @@ import {BsHouse, BsChat, BsPersonCircle, BsPlusLg} from 'react-icons/bs'
 
 const DashboardFooter = () => {
   return (
-    <div className='d-flex justify-content-evenly py-3 bg-light'>
+    <div className='d-flex justify-content-evenly py-2 bg-light h-10'>
       <Link className='link-dark fs-4' to='/dashboard'>
         <BsHouse/>
       </Link>

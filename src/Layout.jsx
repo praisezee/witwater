@@ -5,7 +5,7 @@ import Footer from './Components/Footer';
 
 const Layout = () => {
   return (
-    <div>
+    <div className='App'>
       <Header />
       <Outlet />
       <Footer/>

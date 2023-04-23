@@ -6,17 +6,18 @@ const NewPost = () =>
 {
   const {title, setTitle, message, setMessage, sendPost, image, setImage} = useContext(DashboardContext)
   return (
-    <Container fluid>
+    <Container fluid className='Main'>
       <Form className='py-3 fs-3'>
         <FormLabel htmlFor='title'>Title</FormLabel>
         <FormControl
           id='title'
           placeholder='Title of post'
+          className='py-2'
           required
           value={ title }
           onChange={(e)=>setTitle(e.target.value)}
         />
-        <FormLabel htmlFor='images' className='mt-3'>Add Image</FormLabel>
+        <FormLabel htmlFor='images' className='py-1'>Add Image</FormLabel>
         <FormControl
           type='file'
           placeholder='Add an image'
@@ -24,7 +25,7 @@ const NewPost = () =>
           value={ image }
           onChange={(e)=>setImage(e.target.value)}
         />
-        <FormLabel htmlFor='post' className='mt-3'>Post</FormLabel>
+        <FormLabel htmlFor='post' className='pt-3'>Post</FormLabel>
         <FormControl
           id='post'
           rows={ 12 }
