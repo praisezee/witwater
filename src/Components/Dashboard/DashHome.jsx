@@ -1,11 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import Error from '../Error';
-import DashboardContext from '../context/Context';
+import useAuth from '../../hooks/useAuth'
 
 const DashHome = () =>
 {
-  const {posts} = useContext(DashboardContext)
+  
+  const { posts, getPost } = useAuth();
+  useEffect( () =>
+  {
+    getPost()
+  }, [] )
+  useEffect( () =>
+  {
+    getPost()
+  }, [posts])
   return (
     <Container fluid className='Main'>
       { posts.length ? (

@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button, Container, Form, FormControl, FormLabel } from 'react-bootstrap';
-import DashboardContext from '../context/Context';
+import useAuth from '../../hooks/useAuth'
+
 
 const NewPost = () =>
 {
-  const {title, setTitle, message, setMessage, sendPost, image, setImage} = useContext(DashboardContext)
+  const {title, setTitle, message, setMessage, sendPost, image, setImage, errMsg, errRef} = useAuth()
   return (
     <Container fluid className='Main'>
-      <Form className='py-3 fs-3'>
+      <p className="text-center text-uppercase text-center h1 fw-bold py-1">Add new post</p>
+      <div ref={ errRef } role='alert' className={errMsg? 'alert alert-danger w-75 mx-auto' : 'd-none'} aria-live='assertive'>{ errMsg }</div>
+      <Form className='py-1'>
         <FormLabel htmlFor='title'>Title</FormLabel>
         <FormControl
           id='title'
@@ -28,7 +31,7 @@ const NewPost = () =>
         <FormLabel htmlFor='post' className='pt-3'>Post</FormLabel>
         <FormControl
           id='post'
-          rows={ 12 }
+          rows={ 5 }
           required
           as='textarea'
           placeholder='Enter your post'

@@ -16,11 +16,11 @@ import DashboardLayout from "./Components/Dashboard/DashboardLayout";
 import DashHome from './Components/Dashboard/DashHome'
 import NewPost from './Components/Dashboard/NewPost'
 import Chat from './Components/Dashboard/Chat'
-import { DashboardProvider } from "./Components/context/Context";
+import RequireAuth from './Components/RequireAuth'
+
 
 function App() {
   return (
-    <DashboardProvider>
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route index element={ <Home /> } />
@@ -39,15 +39,18 @@ function App() {
             <Route path="male" element={ <MaleModel /> } />
             <Route path="female" element={<FemaleModel/>}/>
           </Route>
+          {/* catch all */}
           <Route path="*" element={ <Missing/> } />
         </Route>
-        <Route path="dashboard" element={<DashboardLayout/>}>
-          <Route index element={<DashHome/>}/>
-          <Route path="new-post" element={ <NewPost /> } />
-          <Route path="chat" element={<Chat/>}/>
+        {/* protected routes */ }
+        <Route >
+          <Route path="dashboard" element={<DashboardLayout/>}>
+            <Route index element={<DashHome/>}/>
+            <Route path="new-post" element={ <NewPost /> } />
+            <Route path="chat" element={<Chat/>}/>
+          </Route>
         </Route>
       </Routes>
-    </DashboardProvider>
   )
 }
 

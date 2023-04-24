@@ -1,12 +1,15 @@
 import { createContext, useState, useRef, useEffect } from "react";
 import axios from '../api/register'
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 const DashboardContext = createContext( {} );
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%.,;]).{8,24}$/
 const EMAIL_REGEX = /^[a-zA-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const REGISTER_URL ='/register'
+const REGISTER_URL = '/register'
+const LOGIN_URL = '/auth'
+const POST_URL = '/posts'
 
 export const DashboardProvider = ({children}) =>
 {
@@ -14,6 +17,11 @@ export const DashboardProvider = ({children}) =>
   const [ title, setTitle ] = useState( '' );
   const [ message, setMessage ] = useState( '' );
   const [ image, setImage ] = useState( '' )
+  const [ auth, setAuth ] = useState( {} )
+  
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "dashboard";
   
   // ursRef for errors and the likes
   const errRef = useRef()
@@ -55,7 +63,8 @@ export const DashboardProvider = ({children}) =>
   useEffect( () =>
   {
     setErrMsg('')
-  }, [password, confirm,email])
+  }, [ password, confirm, email ] )
+  
 
   // function to handle 
   
@@ -107,26 +116,97 @@ export const DashboardProvider = ({children}) =>
     }
   }
 
-
-
-  const sendPost = (e) =>
+  const handleLogin = async ( e ) =>
   {
     e.preventDefault()
-    const newPost = {
-      title,
-      message,
-      id: posts.length + 1,
-      image
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify( { email, password } ),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      );
+      const result = await response.data
+      //console.log( JSON.stringify( result ) );
+      setAuth( result )
+      console.log(auth)
+      setEmail( '' );
+      setPassword( '' );
+      navigate(from, {replace: true})
+    } catch (err) {
+      if ( !err?.response ) {
+        setErrMsg('No server response')
+      } else if (err.response?.status === 400){
+        setErrMsg('Missing Email or password')
+      } else if (err.response?.status === 401){
+        setErrMsg('Invalid Email or password')
+      } else {
+        setErrMsg('Login Failed')
+      }
+      errRef.current.focus()
     }
-    setPosts( [newPost, ...posts] )
-    setTitle( '' )
-    setMessage('')
   }
+
+  const sendPost = async (e) =>
+  {
+    e.preventDefault()
+    try {
+      const response = await axios.post(
+        POST_URL,
+        JSON.stringify( { title, post: message, name: auth.name, email: auth.email } ),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      );
+      const result = await response.data
+      console.log( result );
+      setTitle( '' )
+      setMessage('')
+    } catch (err) {
+      if ( !err?.response ) {
+        setErrMsg('No server response')
+      } else if (err.response?.status === 400){
+        setErrMsg('All feilds are required')
+      } else {
+        setErrMsg('Unable to create post')
+      }
+    }
+  }
+
+
+  const getPost = async () =>
+    {
+      try {
+        const response = await axios.get(
+          POST_URL,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+          }
+        )
+        const result = response.data
+        setPosts(result)
+      } catch (err) {
+        if ( !err?.response ) {
+          setErrMsg('No server response')
+        } else if ( err.response?.status === 200 ) {
+          setErrMsg('No post to display')
+        } else {
+          setErrMsg('Unable to get post pls try again later')
+        }
+        errRef.current.focus()
+      }
+    }
+
+  
 
 
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus
+      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost
     }}>
       {children}
     </DashboardContext.Provider>

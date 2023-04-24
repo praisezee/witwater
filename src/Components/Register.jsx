@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Container, FloatingLabel, Form, FormControl, Row, Col, Button, FormSelect } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import DashboardContext from './context/Context';
+import useAuth from '../hooks/useAuth';
 
 const Register = () =>
 {
@@ -12,7 +12,7 @@ const Register = () =>
     userRef.current.focus()
   }, [])
 
-  const {errMsg, errRef, success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus} = useContext(DashboardContext)
+  const {errMsg, errRef, success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus} = useAuth()
   return (
     <div className="py-4 min-vh-100">
       <div className="d-flex align-items-center h-100 w-100">
