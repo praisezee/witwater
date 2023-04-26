@@ -73,7 +73,8 @@ export const DashboardProvider = ({children}) =>
     let isMounted = true
     const controller = new AbortController();
     
-    getUsers(isMounted, controller);
+    getUsers( isMounted, controller );
+    getPost( isMounted, controller );
 
     return () =>
     {
@@ -93,7 +94,7 @@ export const DashboardProvider = ({children}) =>
       return;
     }
     try {
-      const response = await axios.post(
+      await axios.post(
         REGISTER_URL,
         JSON.stringify(
           {
@@ -105,7 +106,6 @@ export const DashboardProvider = ({children}) =>
           withCredentials: true
         }
       )
-      console.log( JSON.stringify( response ) );
       setSuccess( true )
       setName( '' )
       setGender( 'Select an option' )
@@ -122,6 +122,7 @@ export const DashboardProvider = ({children}) =>
       } else {
         setErrMsg('Registration failed. pls try again or contact the admin support')
       }
+      errRef.current.focus()
     }
   }
 
@@ -138,18 +139,17 @@ export const DashboardProvider = ({children}) =>
         }
       );
       const result = await response.data
-      //console.log( JSON.stringify( result ) );
       setAuth( result )
-      console.log(auth)
       setEmail( '' );
       setPassword( '' );
       navigate(from, {replace: true})
-    } catch (err) {
-      if (err.response?.status === 400){
-        setErrMsg('Missing Email or password')
+    } catch ( err ) {
+      if ( err.response?.status === 400 ){
+        setErrMsg( 'Missing Email or password' )
       } else if (err.response?.status === 401){
         setErrMsg('Invalid Email or password')
-      } else {
+      }
+      else {
         setErrMsg('Login Failed')
       }
       errRef.current.focus()
@@ -184,24 +184,24 @@ export const DashboardProvider = ({children}) =>
   }
 
 
-  const getPost = async () =>
+  const getPost = async (isMounted,controller) =>
     {
       try {
         const response = await axios.get(
-          POST_URL
+          POST_URL, {
+            signal: controller.signal
+          }
         )
         const result = response.data
-        setPosts( result )
-        console.log(posts);
+      isMounted && setPosts(result)
       } catch (err) {
         if ( !err?.response ) {
           setErrMsg('No server response')
         } else if ( err.response?.status === 204 ) {
-          setErrMsg('No post to display')
+          setErrMsg('No user to display')
         } else {
           setErrMsg('Unable to get post pls try again later')
         }
-        errRef.current.focus()
       }
   }
   
@@ -215,7 +215,6 @@ export const DashboardProvider = ({children}) =>
         )
         const result = response.data
       isMounted && setUser(result)
-      console.log(user);
       } catch (err) {
         if ( !err?.response ) {
           setErrMsg('No server response')
