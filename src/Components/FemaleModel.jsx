@@ -1,10 +1,11 @@
 import React from 'react'
 import Error from './Error'
 import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
+import useAuth from '../hooks/useAuth';
 
 const FemaleModel = () => {
-  const models = []
-  const femaleModels = models.filter(model => model.role === 'model' && model.gender === 'female')
+  const {   user } = useAuth()
+  const femaleModels = user.filter(model => model.role === 'model' && model.gender === 'female')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { femaleModels.length ? (
@@ -13,7 +14,7 @@ const FemaleModel = () => {
             femaleModel => (
               <Col xs={ 10 } md={ 6 } lg={ 4 }>
                 <Card>
-                  <CardImg src={ femaleModel.picture } />
+                  <CardImg src={ femaleModel.src } />
                   <Card.Text>{ femaleModel.name }</Card.Text>
                 </Card>
               </Col>

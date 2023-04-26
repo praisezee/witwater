@@ -43,9 +43,10 @@ function App() {
           <Route path="*" element={ <Missing/> } />
         </Route>
         {/* protected routes */ }
-        <Route >
+        <Route element={<RequireAuth/>}>
           <Route path="dashboard" element={<DashboardLayout/>}>
-            <Route index element={<DashHome/>}/>
+          <Route index element={ <DashHome /> } />
+          {/* <Route path=":id" element={<NewPost/>} /> */}
             <Route path="new-post" element={ <NewPost /> } />
             <Route path="chat" element={<Chat/>}/>
           </Route>

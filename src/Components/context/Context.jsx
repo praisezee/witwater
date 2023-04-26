@@ -10,6 +10,7 @@ const EMAIL_REGEX = /^[a-zA-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const REGISTER_URL = '/register'
 const LOGIN_URL = '/auth'
 const POST_URL = '/posts'
+const USER_URL = '/user'
 
 export const DashboardProvider = ({children}) =>
 {
@@ -18,6 +19,7 @@ export const DashboardProvider = ({children}) =>
   const [ message, setMessage ] = useState( '' );
   const [ image, setImage ] = useState( '' )
   const [ auth, setAuth ] = useState( {} )
+  const [user, setUser] = useState([])
   
   const navigate = useNavigate()
   const location = useLocation()
@@ -66,6 +68,19 @@ export const DashboardProvider = ({children}) =>
   }, [ password, confirm, email ] )
   
 
+  useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    
+    getUsers(isMounted, controller);
+
+    return () =>
+    {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [] )
   // function to handle 
   
   const handleRegister = async (e) =>
@@ -102,13 +117,7 @@ export const DashboardProvider = ({children}) =>
       setPhoneNumber( '' )
       setState('')
     } catch (err) {
-      if ( !err?.response ) {
-        setErrMsg( 'No server Response. pls reload the app and try again' )
-        setTimeout( () =>
-        {
-          setErrMsg('')
-        },5000)
-      } else if (err.response?.status === 409) {
+      if (err.response?.status === 409) {
         setErrMsg('Email already exist. Enter an new email')
       } else {
         setErrMsg('Registration failed. pls try again or contact the admin support')
@@ -136,9 +145,7 @@ export const DashboardProvider = ({children}) =>
       setPassword( '' );
       navigate(from, {replace: true})
     } catch (err) {
-      if ( !err?.response ) {
-        setErrMsg('No server response')
-      } else if (err.response?.status === 400){
+      if (err.response?.status === 400){
         setErrMsg('Missing Email or password')
       } else if (err.response?.status === 401){
         setErrMsg('Invalid Email or password')
@@ -181,32 +188,51 @@ export const DashboardProvider = ({children}) =>
     {
       try {
         const response = await axios.get(
-          POST_URL,
-          {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true
-          }
+          POST_URL
         )
         const result = response.data
-        setPosts(result)
+        setPosts( result )
+        console.log(posts);
       } catch (err) {
         if ( !err?.response ) {
           setErrMsg('No server response')
-        } else if ( err.response?.status === 200 ) {
+        } else if ( err.response?.status === 204 ) {
           setErrMsg('No post to display')
         } else {
           setErrMsg('Unable to get post pls try again later')
         }
         errRef.current.focus()
       }
-    }
+  }
+  
+  const getUsers = async (isMounted, controller) =>
+  {
+    try {
+        const response = await axios.get(
+          USER_URL, {
+            signal: controller.signal
+          }
+        )
+        const result = response.data
+      isMounted && setUser(result)
+      console.log(user);
+      } catch (err) {
+        if ( !err?.response ) {
+          setErrMsg('No server response')
+        } else if ( err.response?.status === 204 ) {
+          setErrMsg('No user to display')
+        } else {
+          setErrMsg('Unable to get post pls try again later')
+        }
+      }
+  }
 
   
 
 
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost
+      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user
     }}>
       {children}
     </DashboardContext.Provider>

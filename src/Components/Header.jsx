@@ -102,7 +102,7 @@ const Header = () =>
                     <Button variant='outline-primary'>Search</Button>
                   </Form>
                   <NavLink eventKey={1} className='p-0'>
-                    <Link className='btn btn-outline-primary' to='dashboard'>Join</Link>
+                    <Link className='btn btn-outline-primary' to='auth/register'>Join</Link>
                   </NavLink>
                 </div>
                 <Row className='text-center'>

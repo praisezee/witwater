@@ -11,10 +11,6 @@ const DashHome = () =>
   {
     getPost()
   }, [] )
-  useEffect( () =>
-  {
-    getPost()
-  }, [posts])
   return (
     <Container fluid className='Main'>
       { posts.length ? (
