@@ -43,7 +43,7 @@ function App() {
           <Route path="*" element={ <Missing/> } />
         </Route>
         {/* protected routes */ }
-        <Route element={<RequireAuth/>}>
+        <Route >
           <Route path="dashboard" element={<DashboardLayout/>}>
           <Route index element={ <DashHome /> } />
           {/* <Route path=":id" element={<NewPost/>} /> */}

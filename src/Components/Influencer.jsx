@@ -1,10 +1,23 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Error from './Error'
 import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
 
 const Influencer = () => {
-  const {   user } = useAuth()
+  const { user, getUsers } = useAuth()
+  useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    
+    getUsers( isMounted, controller );
+
+    return () =>
+    {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [] )
   const influencers = user.filter(model => model.role === 'influencer')
   return (
     <Container fluid className='my-5 min-vh-100'>

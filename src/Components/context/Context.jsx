@@ -68,20 +68,7 @@ export const DashboardProvider = ({children}) =>
   }, [ password, confirm, email ] )
   
 
-  useEffect( () =>
-  {
-    let isMounted = true
-    const controller = new AbortController();
-    
-    getUsers( isMounted, controller );
-    getPost( isMounted, controller );
-
-    return () =>
-    {
-      isMounted = false;
-      controller.abort()
-    }
-  }, [] )
+  
   // function to handle 
   
   const handleRegister = async (e) =>
@@ -117,7 +104,9 @@ export const DashboardProvider = ({children}) =>
       setPhoneNumber( '' )
       setState('')
     } catch (err) {
-      if (err.response?.status === 409) {
+      if ( !err?.response ) {
+          setErrMsg('No server response')
+        } else if (err.response?.status === 409) {
         setErrMsg('Email already exist. Enter an new email')
       } else {
         setErrMsg('Registration failed. pls try again or contact the admin support')
@@ -144,7 +133,9 @@ export const DashboardProvider = ({children}) =>
       setPassword( '' );
       navigate(from, {replace: true})
     } catch ( err ) {
-      if ( err.response?.status === 400 ){
+      if ( !err.response ) {
+          setErrMsg('No server response')
+        } else if ( err.response?.status === 400 ){
         setErrMsg( 'Missing Email or password' )
       } else if (err.response?.status === 401){
         setErrMsg('Invalid Email or password')
@@ -173,13 +164,14 @@ export const DashboardProvider = ({children}) =>
       setTitle( '' )
       setMessage('')
     } catch (err) {
-      if ( !err?.response ) {
+      if ( !err.response ) {
         setErrMsg('No server response')
       } else if (err.response?.status === 400){
         setErrMsg('All feilds are required')
       } else {
         setErrMsg('Unable to create post')
       }
+      errRef.current.focus()
     }
   }
 
@@ -195,13 +187,14 @@ export const DashboardProvider = ({children}) =>
         const result = response.data
       isMounted && setPosts(result)
       } catch (err) {
-        if ( !err?.response ) {
+        if ( !err.response ) {
           setErrMsg('No server response')
         } else if ( err.response?.status === 204 ) {
           setErrMsg('No user to display')
         } else {
           setErrMsg('Unable to get post pls try again later')
         }
+        errRef.current.focus()
       }
   }
   
@@ -223,6 +216,7 @@ export const DashboardProvider = ({children}) =>
         } else {
           setErrMsg('Unable to get post pls try again later')
         }
+      errRef.current.focus()
       }
   }
 
@@ -231,7 +225,7 @@ export const DashboardProvider = ({children}) =>
 
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user
+      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user, getUsers
     }}>
       {children}
     </DashboardContext.Provider>

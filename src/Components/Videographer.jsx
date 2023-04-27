@@ -1,11 +1,24 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Error from './Error'
 import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
 const Videographer = () => {
-  const {   user } = useAuth()
+  const { user, getUsers } = useAuth()
+  useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    
+    getUsers( isMounted, controller );
+
+    return () =>
+    {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [] )
   const videographers = user.filter(model => model.role === 'videographer')
   return (
     <Container fluid className='my-5 min-vh-100'>

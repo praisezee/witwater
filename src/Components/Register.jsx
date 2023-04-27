@@ -28,7 +28,7 @@ const Register = () =>
             <Container fluid>
               <Row className='border rounded shadow py-5  w-100 mx-auto'>
                 <p className="text-center text-uppercase text-center h1 fw-bold py-3">Register</p>
-                <div ref={ errRef } role='alert' className={errMsg? 'alert alert-danger w-75 mx-auto' : 'd-none'} aria-live='assertive'>{ errMsg }</div>
+                <div ref={ errRef } role='alert' className={errMsg ? 'alert alert-danger w-75 mx-auto' : 'd-none'} aria-live='assertive'>{ errMsg }</div>
                 <Form >
                   <Row>
                     <Col xs={ 12 } className='mx-auto'>
@@ -46,7 +46,7 @@ const Register = () =>
                     <Col xs={ 12 } lg={ 6 }>
                       <FloatingLabel className='my-2' controlId='floatingInputGrid' label='Gender'>
                         <FormSelect value={gender} onChange={(e)=>setGender(e.target.value)} required>
-                          <option value="Select an option" selected disabled>Select an option</option>
+                          <option defaultValue="Select an option" disabled>Select an option</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
                         </FormSelect>
@@ -55,7 +55,7 @@ const Register = () =>
                     <Col xs={ 12 } lg={ 6 }>
                       <FloatingLabel className='my-2' controlId='floatingInputGrid' label='Role'>
                         <FormSelect value={role} onChange={(e)=>setRole(e.target.value)} required>
-                          <option value="Select an option" selected disabled>Select an option</option>
+                          <option defaultValue="Select an option"  disabled>Select an option</option>
                           <option value="model">Model</option>
                           <option value="client">Client</option>
                           <option value="photographer">Photographer</option>

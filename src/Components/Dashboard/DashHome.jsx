@@ -6,10 +6,12 @@ import useAuth from '../../hooks/useAuth'
 const DashHome = () =>
 {
   
-  const { posts, getPost } = useAuth();
+  const { posts, getPost, errRef } = useAuth();
   useEffect( () =>
   {
-    getPost()
+    let isMounted = true
+    const controller = new AbortController();
+    getPost( isMounted, controller );
   }, [] )
   return (
     <Container fluid className='Main'>
@@ -31,7 +33,7 @@ const DashHome = () =>
         ))}
         </div>
       ) : (
-          <Error/>
+          <Error errRef={ errRef} />
       ) }
     </Container>
   )

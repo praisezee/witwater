@@ -1,11 +1,24 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Error from './Error'
 import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
 
 const Photographer = () =>
 {
-  const {   user } = useAuth()
+  const { user, getUsers } = useAuth()
+  useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    
+    getUsers( isMounted, controller );
+
+    return () =>
+    {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [] )
   
   const photographers = user.filter(model => model.role === 'photographer')
   return (

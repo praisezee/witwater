@@ -1,10 +1,25 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Error from './Error'
 import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
 
-const FemaleModel = () => {
-  const {   user } = useAuth()
+const FemaleModel = () =>
+{
+  const { user, getUsers } = useAuth()
+  useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    
+    getUsers( isMounted, controller );
+
+    return () =>
+    {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [] )
+  
   const femaleModels = user.filter(model => model.role === 'model' && model.gender === 'female')
   return (
     <Container fluid className='my-5 min-vh-100'>
