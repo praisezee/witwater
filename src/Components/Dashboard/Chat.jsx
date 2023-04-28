@@ -16,7 +16,7 @@ const Chat = () =>
   const [ newMessage, setNewMessage ] = useState( '' )
   const [arivalMessage, setArrivalMessage] = useState(null)
   const scrollRef = useRef()
-  const socket = useRef(io( 'http://localhost:3700' ))
+  const socket = useRef(io( 'https://witwater-socket.onrender.com' ))
   
 
   useEffect( () =>
