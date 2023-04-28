@@ -16,7 +16,14 @@ const Chat = () =>
   const [ newMessage, setNewMessage ] = useState( '' )
   const [arivalMessage, setArrivalMessage] = useState(null)
   const scrollRef = useRef()
-  const socket = useRef()
+  const socket = useRef(io( 'http://localhost:3700' ))
+  
+
+  useEffect( () =>
+  {
+    socket.current.on('connection')
+  },[])
+
 
   const handleNewMessage = async ( e ) =>
   {
@@ -24,7 +31,7 @@ const Chat = () =>
     const message = {
       sender: auth.id,
       text: newMessage,
-      conversationId : currentChat.id
+      conversationId : currentChat._id
     }
 
     const receiverId = currentChat.members.find(member => member !== auth.id)
@@ -48,7 +55,6 @@ const Chat = () =>
 
   useEffect( () =>
   {
-    socket.current = io( 'ws://localhost:3500' );
     socket.current.on( 'getMessage', data =>
     {
       setArrivalMessage( {
@@ -57,7 +63,8 @@ const Chat = () =>
         createdAt: Date.now()
       })
     })
-  }, [])
+
+  })
 
   useEffect( () =>
   {
@@ -71,7 +78,7 @@ const Chat = () =>
     socket.current.emit( 'addUser', auth.id );
     socket.current.on( 'getUsers', users =>
     {
-      
+      console.log(users)
     })
   }, [auth] )
   useEffect( () =>
@@ -79,20 +86,28 @@ const Chat = () =>
     const getConversation = async () =>
     {
       try {
-        const response = await axios.get( "/conversation" + auth.id )
+        const response = await axios.get( "/conversation/" + auth.id )
         setConversations(response.data)
       } catch (err) {
         console.log(err);
       }
     }
     getConversation()
-  }, [ auth.id ] )
+  }, [ auth ] )
   useEffect( () =>
   {
+    let isMounted = true
+    const controller = new AbortController();
     const getMessages = async ()=> {
       try {
-        const response = await axios.get( 'message/' + currentChat.id )
-        setMessages(response.data)
+
+        const response = await axios.get( `/message/${currentChat._id}`, {
+            signal: controller.signal
+          }
+        )
+        const result = response.data
+      isMounted && setMessages(result)
+        
       } catch (err) {
         console.log(err);
       }
@@ -103,7 +118,8 @@ const Chat = () =>
   useEffect( () =>
   {
     scrollRef.current?.scrollIntoView({behavior: 'smooth'})
-  }, [messages])
+  }, [ messages ] )
+
   return (
     <div> 
       <Container fluid>
