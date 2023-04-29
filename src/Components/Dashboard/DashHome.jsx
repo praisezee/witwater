@@ -7,6 +7,7 @@ const DashHome = () =>
 {
   
   const { posts, getPost, errRef } = useAuth();
+  
   useEffect( () =>
   {
     let isMounted = true

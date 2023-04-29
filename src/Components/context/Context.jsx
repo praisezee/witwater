@@ -1,6 +1,8 @@
 import { createContext, useState, useRef, useEffect } from "react";
 import axios from '../api/register'
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
+import { io } from 'socket.io-client';
 
 
 const DashboardContext = createContext( {} );
@@ -11,9 +13,11 @@ const REGISTER_URL = '/register'
 const LOGIN_URL = '/auth'
 const POST_URL = '/posts'
 const USER_URL = '/user'
+const LOGOUT_URL ='/logout'
 
 export const DashboardProvider = ({children}) =>
 {
+  const axiosPrivate = useAxiosPrivate()
   const [posts, setPosts] = useState([])
   const [ title, setTitle ] = useState( '' );
   const [ message, setMessage ] = useState( '' );
@@ -24,6 +28,16 @@ export const DashboardProvider = ({children}) =>
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || "dashboard";
+
+  // chat components
+  const [ conversations, setConversations ] = useState( [] )
+  const [ currentChat, setCurrentChat ] = useState( null )
+  const [ messages, setMessages ] = useState( [] )
+  const [ newMessage, setNewMessage ] = useState( '' )
+  const [arivalMessage, setArrivalMessage] = useState(null)
+  const scrollRef = useRef()
+  const socket = useRef(io( 'ws://localhost:3500' ))
+  
   
   // ursRef for errors and the likes
   const errRef = useRef()
@@ -66,6 +80,62 @@ export const DashboardProvider = ({children}) =>
   {
     setErrMsg('')
   }, [ password, confirm, email ] )
+
+
+  //use effect for chat
+  useEffect( () =>
+  {
+    arivalMessage &&
+      currentChat?.members.includes( arivalMessage.sender ) &&
+      setMessages( prev => [ ...prev, arivalMessage ] )
+  }, [arivalMessage, currentChat])
+  
+  useEffect( () =>
+  {
+    socket.current.emit( 'addUser', auth.id );
+    socket.current.on( 'getUsers', users =>
+    {
+      console.log(users)
+    })
+  }, [auth] )
+  useEffect( () =>
+  {
+    const getConversation = async () =>
+    {
+      try {
+        const response = await axiosPrivate.get( "/conversation/" + auth.id )
+        setConversations(response.data)
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getConversation()
+  }, [ auth,axiosPrivate ] )
+  useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    const getMessages = async ()=> {
+      try {
+
+        const response = await axiosPrivate.get( `/message/${currentChat._id}`, {
+            signal: controller.signal
+          }
+        )
+        const result = response.data
+      isMounted && setMessages(result)
+        
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getMessages()
+  }, [ axiosPrivate,currentChat ] )
+  
+  useEffect( () =>
+  {
+    scrollRef.current?.scrollIntoView({behavior: 'smooth'})
+  }, [ messages ] )
   
 
   
@@ -151,13 +221,9 @@ export const DashboardProvider = ({children}) =>
   {
     e.preventDefault()
     try {
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         POST_URL,
-        JSON.stringify( { title, post: message, name: auth.name, email: auth.email } ),
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        }
+        JSON.stringify( { title, post: message, name: auth.name, email: auth.email } )
       );
       const result = await response.data
       console.log( result );
@@ -172,6 +238,7 @@ export const DashboardProvider = ({children}) =>
         setErrMsg('Unable to create post')
       }
       errRef.current.focus()
+      navigate('auth/login', {state: {from :location}, replace: true})
     }
   }
 
@@ -179,7 +246,7 @@ export const DashboardProvider = ({children}) =>
   const getPost = async (isMounted,controller) =>
     {
       try {
-        const response = await axios.get(
+        const response = await axiosPrivate.get(
           POST_URL, {
             signal: controller.signal
           }
@@ -195,6 +262,7 @@ export const DashboardProvider = ({children}) =>
           setErrMsg('Unable to get post pls try again later')
         }
         errRef.current.focus()
+        navigate('auth/login', {state: {from :location}, replace: true})
       }
   }
   
@@ -220,12 +288,49 @@ export const DashboardProvider = ({children}) =>
       }
   }
 
+  const handleNewMessage = async ( e ) =>
+  {
+    e.preventDefault()
+    const message = {
+      sender: auth.id,
+      text: newMessage,
+      conversationId : currentChat._id
+    }
+
+    const receiverId = currentChat.members.find(member => member !== auth.id)
+
+    socket.current.emit( 'sendMessage', {
+      senderId: auth.id,
+      receiverId,
+      text: newMessage
+    })
+    try {
+      const response = await axiosPrivate.post( '/message', message );
+      setMessages( [ ...messages, response.data ] )
+      setNewMessage('')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const handelLogout = async (e) =>
+  {
+    e.preventDefault()
+    try {
+      await axiosPrivate.get( LOGOUT_URL )
+      setAuth({})
+      } catch (err) {
+        console.log(err)
+        errRef.current.focus()
+        navigate('auth/login', {state: {from :location}, replace: true})
+      }
+  }
   
 
 
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user, getUsers
+      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user, getUsers,handleNewMessage,conversations, setConversations,currentChat, setCurrentChat,messages, setMessages,newMessage, setNewMessage, arivalMessage, setArrivalMessage, socket, scrollRef, handelLogout
     }}>
       {children}
     </DashboardContext.Provider>

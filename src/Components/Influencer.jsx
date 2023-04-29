@@ -18,7 +18,7 @@ const Influencer = () => {
       controller.abort()
     }
   }, [] )
-  const influencers = user.filter(model => model.role === 'influencer')
+  const influencers = user.filter(model => model.role.toLowecase() === 'influencer')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { influencers.length ? (

@@ -18,7 +18,7 @@ const Model = () => {
       controller.abort()
     }
   }, [] )
-  const modeler = user.filter(model => model.role === 'model')
+  const modeler = user.filter(model => model.role.toLowecase() === 'model')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { modeler.length ? (

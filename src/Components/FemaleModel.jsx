@@ -20,7 +20,7 @@ const FemaleModel = () =>
     }
   }, [] )
   
-  const femaleModels = user.filter(model => model.role === 'model' && model.gender === 'female')
+  const femaleModels = user.filter(model => model.role.toLowecase() === 'model' && model.gender.toLowecase() === 'female')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { femaleModels.length ? (

@@ -19,7 +19,7 @@ const Stylist = () =>
       controller.abort()
     }
   }, [] )
-  const stylist = user.filter( model => model.role === 'stylist' );
+  const stylist = user.filter( model => model.role.toLowecase() === 'stylist' );
   return (
     <Container fluid className='my-5 min-vh-100'>
       { stylist.length ? (

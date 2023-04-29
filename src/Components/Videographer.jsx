@@ -19,7 +19,7 @@ const Videographer = () => {
       controller.abort()
     }
   }, [] )
-  const videographers = user.filter(model => model.role === 'videographer')
+  const videographers = user.filter( model => model.role.toLowecase() === 'videographer' )
   return (
     <Container fluid className='my-5 min-vh-100'>
       { videographers.length ? (

@@ -1,52 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Alert, Button, Col, Container, FormControl, Row } from 'react-bootstrap';
 import {BsSend} from 'react-icons/bs'
 import Conversation from './chat/Conversation';
 import Message from './chat/Message';
 import useAuth from '../../hooks/useAuth'
-import axios from '../api/register'
-import { io } from 'socket.io-client';
+
 
 const Chat = () =>
 {
-  const { auth } = useAuth()
-  const [ conversations, setConversations ] = useState( [] )
-  const [ currentChat, setCurrentChat ] = useState( null )
-  const [ messages, setMessages ] = useState( [] )
-  const [ newMessage, setNewMessage ] = useState( '' )
-  const [arivalMessage, setArrivalMessage] = useState(null)
-  const scrollRef = useRef()
-  const socket = useRef(io( 'https://witwater-socket.onrender.com' ))
-  
+  const { auth, handleNewMessage,conversations,currentChat, setCurrentChat,messages, newMessage, setNewMessage, setArrivalMessage, socket, scrollRef } = useAuth()
 
-
-  const handleNewMessage = async ( e ) =>
-  {
-    e.preventDefault()
-    const message = {
-      sender: auth.id,
-      text: newMessage,
-      conversationId : currentChat._id
-    }
-
-    const receiverId = currentChat.members.find(member => member !== auth.id)
-
-    socket.current.emit( 'sendMessage', {
-      senderId: auth.id,
-      receiverId,
-      text: newMessage
-    })
-    try {
-      const response = await axios.post( '/message', message );
-      setMessages( [ ...messages, response.data ] )
-      setNewMessage('')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-
-  
 
   useEffect( () =>
   {
@@ -60,60 +23,6 @@ const Chat = () =>
     })
 
   })
-
-  useEffect( () =>
-  {
-    arivalMessage &&
-      currentChat?.members.includes( arivalMessage.sender ) &&
-      setMessages( prev => [ ...prev, arivalMessage ] )
-  }, [arivalMessage, currentChat])
-  
-  useEffect( () =>
-  {
-    socket.current.emit( 'addUser', auth.id );
-    socket.current.on( 'getUsers', users =>
-    {
-      console.log(users)
-    })
-  }, [auth] )
-  useEffect( () =>
-  {
-    const getConversation = async () =>
-    {
-      try {
-        const response = await axios.get( "/conversation/" + auth.id )
-        setConversations(response.data)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getConversation()
-  }, [ auth ] )
-  useEffect( () =>
-  {
-    let isMounted = true
-    const controller = new AbortController();
-    const getMessages = async ()=> {
-      try {
-
-        const response = await axios.get( `/message/${currentChat._id}`, {
-            signal: controller.signal
-          }
-        )
-        const result = response.data
-      isMounted && setMessages(result)
-        
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getMessages()
-  }, [ currentChat ] )
-  
-  useEffect( () =>
-  {
-    scrollRef.current?.scrollIntoView({behavior: 'smooth'})
-  }, [ messages ] )
 
   return (
     <div> 

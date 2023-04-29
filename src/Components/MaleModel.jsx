@@ -18,7 +18,7 @@ const MaleModel = () => {
       controller.abort()
     }
   }, [] )
-  const maleModels = user.filter(model => model.role === 'model' && model.gender === 'male')
+  const maleModels = user.filter(model => model.role.toLowecase() === 'model' && model.gender.toLowecase() === 'male')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { maleModels.length ? (

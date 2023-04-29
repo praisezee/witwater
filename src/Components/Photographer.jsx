@@ -20,7 +20,7 @@ const Photographer = () =>
     }
   }, [] )
   
-  const photographers = user.filter(model => model.role === 'photographer')
+  const photographers = user.filter(model => model.role.toLowecase() === 'photographer')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { photographers.length ? (

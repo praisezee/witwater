@@ -17,41 +17,44 @@ import DashHome from './Components/Dashboard/DashHome'
 import NewPost from './Components/Dashboard/NewPost'
 import Chat from './Components/Dashboard/Chat'
 import RequireAuth from './Components/RequireAuth'
+import PersistLogin from "./Components/PersistLogin";
 
 
-function App() {
+const App= ()=> {
   return (
-      <Routes>
-        <Route path="/" element={<Layout/>}>
-          <Route index element={ <Home /> } />
-          <Route path="auth" >
-            <Route index element={ <Login /> } />
-            <Route path="register" element={ <Register /> } />
-            <Route path="login" element={ <Login /> } />
-          </Route>
-          <Route path="photographer" element={ <Photographer /> } />
-          <Route path="videographer" element={ <Videographer /> } />
-          <Route path="stylist" element={ <Stylist /> } />
-          <Route path="artist" element={ <Artist /> } />
-          <Route path="influencer" element={ <Influencer /> } />
-          <Route path='model'>
-            <Route index element={ <Model /> } />
-            <Route path="male" element={ <MaleModel /> } />
-            <Route path="female" element={<FemaleModel/>}/>
-          </Route>
-          {/* catch all */}
-          <Route path="*" element={ <Missing/> } />
-        </Route>
-        {/* protected routes */ }
-        <Route >
-          <Route path="dashboard" element={<DashboardLayout/>}>
+  <Routes>
+    <Route path="/" element={<Layout/>}>
+      <Route index element={ <Home /> } />
+      <Route path="auth" >
+        <Route index element={ <Login /> } />
+        <Route path="register" element={ <Register /> } />
+        <Route path="login" element={ <Login /> } />
+      </Route>
+      <Route path="photographer" element={ <Photographer /> } />
+      <Route path="videographer" element={ <Videographer /> } />
+      <Route path="stylist" element={ <Stylist /> } />
+      <Route path="artist" element={ <Artist /> } />
+      <Route path="influencer" element={ <Influencer /> } />
+      <Route path='model'>
+        <Route index element={ <Model /> } />
+        <Route path="male" element={ <MaleModel /> } />
+        <Route path="female" element={<FemaleModel/>}/>
+      </Route>
+      {/* catch all */}
+      <Route path="*" element={ <Missing/> } />
+    </Route>
+    {/* protected routes */ }
+    <Route element={ <PersistLogin /> }>
+      <Route element={<RequireAuth/>}>
+        <Route path="dashboard" element={<DashboardLayout/>}>
           <Route index element={ <DashHome /> } />
           {/* <Route path=":id" element={<NewPost/>} /> */}
-            <Route path="new-post" element={ <NewPost /> } />
-            <Route path="chat" element={<Chat/>}/>
-          </Route>
+          <Route path="new-post" element={ <NewPost /> } />
+          <Route path="chat" element={<Chat/>}/>
         </Route>
-      </Routes>
+      </Route>
+    </Route>
+  </Routes>
   )
 }
 
