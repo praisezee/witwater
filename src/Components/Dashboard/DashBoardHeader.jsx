@@ -10,7 +10,7 @@ const DashBoardHeader = () =>
   const signOut = async () =>
   {
     await logout();
-    navigate('../auth')
+    navigate('../auth/login')
   }
   return (
     <div className='d-flex h-10 w-100 py-3 bg-light'>
