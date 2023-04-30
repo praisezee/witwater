@@ -28,7 +28,7 @@ const PersistLogin = () =>
   return (
     <>
       { isLoading ?
-        <div className='vh-100 d-flex justify-content-center align-items-center'>
+        <div className='vh-100 d-flex justify-content-center align-items-center w-100'>
           <Spinner animation='grow' variant='primary'/>
           <Spinner animation='grow' variant='primary'/>
           <Spinner animation='grow' variant='primary'/>
