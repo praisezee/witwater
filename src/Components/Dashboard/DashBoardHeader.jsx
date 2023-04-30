@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const DashBoardHeader = () =>
 {
   const logout = useLogout()
-  const navigate = useNavigate
+  const navigate = useNavigate()
 
   const signOut = async () =>
   {
