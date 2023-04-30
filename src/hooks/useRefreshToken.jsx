@@ -1,4 +1,4 @@
-import axios from '../Components/api/axios'
+import axios from '../Components/api/register'
 import useAuth from './useAuth'
 
 const useRefreshToken = () =>
