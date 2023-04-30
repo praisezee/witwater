@@ -28,11 +28,11 @@ const PersistLogin = () =>
   return (
     <>
       { isLoading ?
-        <>
+        <div className='vh-100 d-flex justify-content-center align-items-center'>
           <Spinner animation='grow' variant='primary'/>
           <Spinner animation='grow' variant='primary'/>
           <Spinner animation='grow' variant='primary'/>
-        </>
+        </div>
         : <Outlet/>
       }
     </>
