@@ -1,6 +1,7 @@
 import React from 'react'
 import useLogout from '../../hooks/useLogout'
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const DashBoardHeader = () =>
 {
@@ -14,7 +15,7 @@ const DashBoardHeader = () =>
   }
   return (
     <div className='d-flex h-10 w-100 py-3 bg-light'>
-      <button onClick={signOut}>signOut</button>
+      <Button variant='primary' onClick={signOut}>signOut</Button>
     </div>
   )
 }

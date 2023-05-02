@@ -29,6 +29,9 @@ export const DashboardProvider = ({children}) =>
   const location = useLocation()
   const from = location.state?.from?.pathname || "dashboard";
 
+
+  const [isLoggedIn,setIsLoggedIn] = useState(false)
+
   // chat components
   const [ conversations, setConversations ] = useState( [] )
   const [ currentChat, setCurrentChat ] = useState( null )
@@ -58,7 +61,8 @@ export const DashboardProvider = ({children}) =>
   const [validMatch, setValidMatch] =useState(false)
   const [ matchFocus, setMatchFocus ] = useState( false )
   const [ validEmail, setValidEmail ] = useState( false )
-  const [emailFocus, setEmailFocus] = useState(false)
+  const [ emailFocus, setEmailFocus ] = useState( false )
+  const [persist, setPersist] = useState(JSON.parse(localStorage.getItem('persist')) || false)
 
   // useEffect to handle password check
   
@@ -143,6 +147,7 @@ export const DashboardProvider = ({children}) =>
   
   const handleRegister = async (e) =>
   {
+    
     e.preventDefault()
     const v1 = EMAIL_REGEX.test( email )
     const v2 = PWD_REGEX.test( password )
@@ -150,6 +155,7 @@ export const DashboardProvider = ({children}) =>
       setErrMsg( 'An Error occured pls try again' );
       return;
     }
+    setIsLoggedIn( true )
     try {
       await axios.post(
         REGISTER_URL,
@@ -172,7 +178,8 @@ export const DashboardProvider = ({children}) =>
       setEmail( '' )
       setPassword( '' )
       setPhoneNumber( '' )
-      setState('')
+      setState( '' )
+      setIsLoggedIn(false)
     } catch (err) {
       if ( !err?.response ) {
           setErrMsg('No server response')
@@ -181,12 +188,14 @@ export const DashboardProvider = ({children}) =>
       } else {
         setErrMsg('Registration failed. pls try again or contact the admin support')
       }
+      setIsLoggedIn(false)
       errRef.current.focus()
     }
   }
 
   const handleLogin = async ( e ) =>
   {
+    setIsLoggedIn( true )
     e.preventDefault()
     try {
       const response = await axios.post(
@@ -197,11 +206,17 @@ export const DashboardProvider = ({children}) =>
           withCredentials: true
         }
       );
+      
       const result = await response.data
-      setAuth( result )
-      setEmail( '' );
-      setPassword( '' );
-      navigate(from, {replace: true})
+      setTimeout( () =>
+      {
+        setIsLoggedIn( false )
+        setAuth( result )
+        setEmail( '' );
+        setPassword( '' );
+        navigate(from, {replace: true})
+      },2000)
+      
     } catch ( err ) {
       if ( !err.response ) {
           setErrMsg('No server response')
@@ -213,6 +228,7 @@ export const DashboardProvider = ({children}) =>
       else {
         setErrMsg('Login Failed')
       }
+      setIsLoggedIn(false)
       errRef.current.focus()
     }
   }
@@ -330,7 +346,7 @@ export const DashboardProvider = ({children}) =>
 
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user, getUsers,handleNewMessage,conversations, setConversations,currentChat, setCurrentChat,messages, setMessages,newMessage, setNewMessage, arivalMessage, setArrivalMessage, socket, scrollRef, handelLogout
+      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user, getUsers,handleNewMessage,conversations, setConversations,currentChat, setCurrentChat,messages, setMessages,newMessage, setNewMessage, arivalMessage, setArrivalMessage, socket, scrollRef, handelLogout, isLoggedIn,persist, setPersist
     }}>
       {children}
     </DashboardContext.Provider>

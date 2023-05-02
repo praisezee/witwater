@@ -1,12 +1,14 @@
 import React, {useRef, useEffect} from 'react'
-import { Container, FloatingLabel, Form, FormControl, Row, Col, Button } from 'react-bootstrap';
+import { Container, FloatingLabel, Form, FormControl, Row, Col, Button, Spinner, FormCheck } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 const Login = () =>
 {
   const userRef = useRef()
-  const { errRef, email, password, errMsg, setErrMsg, handleLogin, setEmail, setPassword } = useAuth()
+  const { errRef, email, password, errMsg, setErrMsg, handleLogin, setEmail, setPassword, isLoggedIn, persist, setPresist } = useAuth()
+
+  
   
 
 
@@ -19,6 +21,15 @@ const Login = () =>
   {
     setErrMsg( '' );
   }, [ email, password ] )
+
+  const togglePersist = () =>
+  {
+    setPresist( prev => !prev );
+  }
+  useEffect( () =>
+  {
+    localStorage.setItem('persist', persist)
+  }, [persist])
   
   return (
     <div className="py-4 vh-75">
@@ -53,12 +64,22 @@ const Login = () =>
               </Row>
               <Row>
                 <Col xs={12} lg={6} className="d-flex my-4 mx-auto">
-                <p className="text-secondary my-auto">
-                  Don't have an account? click <Link to='../register' className='link-primary'>here</Link>
-                </p>
-                <Button className='ms-auto h-3 text-capitalize fw-bold' onClick={handleLogin}>
-                  Login
-                </Button>
+                  <div>
+                    <FormCheck type='checkbox' id='default-checkbox' label='Remember me on this device' onChange={ togglePersist } checked={ persist } />
+                    <p className="text-secondary my-auto">
+                    Don't have an account? click <Link to='../register'  className='link-primary'>here</Link>
+                    </p>
+                  </div>
+                  { isLoggedIn ?
+                    <Button variant='primary' className='ms-auto h-3 text-capitalize fw-bold ' disabled  onClick={ handleLogin }>
+                      <Spinner as='span' size='sm' role='status' aria-hidden='true'/> loading
+                    </Button>
+                    
+                    :
+                    <Button className='ms-auto h-3 text-capitalize fw-bold' onClick={ handleLogin }>
+                      Login
+                    </Button>
+                }
               </Col>
               </Row>
             </Form>
