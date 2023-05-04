@@ -1,15 +1,15 @@
 import React from 'react'
 import { Button, Container, Form, FormControl, FormLabel } from 'react-bootstrap';
-import useAuth from '../../hooks/useAuth'
+import useDashboardContext from '../../hooks/useDashboardContext'
 
 
 const NewPost = () =>
 {
-  const {title, setTitle, message, setMessage, sendPost, image, setImage, errMsg, errRef} = useAuth()
+  const { title, setTitle, message, setMessage, sendPost, image, setImage, errMsg, errRef } = useDashboardContext()
   return (
     <Container fluid className='Main'>
       <p className="text-center text-uppercase text-center h1 fw-bold py-1">Add new post</p>
-      <div ref={ errRef } role='alert' className={errMsg? 'alert alert-danger w-75 mx-auto' : 'd-none'} aria-live='assertive'>{ errMsg }</div>
+      <div ref={ errRef } role='alert' className={errMsg ? 'alert alert-danger w-75 mx-auto' : 'd-none'} aria-live='assertive'>{ errMsg }</div>
       <Form className='py-1'>
         <FormLabel htmlFor='title'>Title</FormLabel>
         <FormControl

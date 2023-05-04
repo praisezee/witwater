@@ -1,24 +1,18 @@
 import { createContext, useState, useRef, useEffect } from "react";
 import axios from '../api/register'
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-import { io } from 'socket.io-client';
 
 
-const DashboardContext = createContext( {} );
+const MainContext = createContext( {} );
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%.,;]).{8,24}$/
 const EMAIL_REGEX = /^[a-zA-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const REGISTER_URL = '/register'
 const LOGIN_URL = '/auth'
-const POST_URL = '/posts'
 const USER_URL = '/user'
-const LOGOUT_URL ='/logout'
 
-export const DashboardProvider = ({children}) =>
+export const MainProvider = ({children}) =>
 {
-  const axiosPrivate = useAxiosPrivate()
-  const [posts, setPosts] = useState([])
   const [ title, setTitle ] = useState( '' );
   const [ message, setMessage ] = useState( '' );
   const [ image, setImage ] = useState( '' )
@@ -32,14 +26,6 @@ export const DashboardProvider = ({children}) =>
 
   const [isLoggedIn,setIsLoggedIn] = useState(false)
 
-  // chat components
-  const [ conversations, setConversations ] = useState( [] )
-  const [ currentChat, setCurrentChat ] = useState( null )
-  const [ messages, setMessages ] = useState( [] )
-  const [ newMessage, setNewMessage ] = useState( '' )
-  const [arivalMessage, setArrivalMessage] = useState(null)
-  const scrollRef = useRef()
-  const socket = useRef(io( 'ws://localhost:3500' ))
   
   
   // ursRef for errors and the likes
@@ -85,61 +71,6 @@ export const DashboardProvider = ({children}) =>
     setErrMsg('')
   }, [ password, confirm, email ] )
 
-
-  //use effect for chat
-  useEffect( () =>
-  {
-    arivalMessage &&
-      currentChat?.members.includes( arivalMessage.sender ) &&
-      setMessages( prev => [ ...prev, arivalMessage ] )
-  }, [arivalMessage, currentChat])
-  
-  useEffect( () =>
-  {
-    socket.current.emit( 'addUser', auth.id );
-    socket.current.on( 'getUsers', users =>
-    {
-      console.log(users)
-    })
-  }, [auth] )
-  useEffect( () =>
-  {
-    const getConversation = async () =>
-    {
-      try {
-        const response = await axiosPrivate.get( "/conversation/" + auth.id )
-        setConversations(response.data)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getConversation()
-  }, [ auth,axiosPrivate ] )
-  useEffect( () =>
-  {
-    let isMounted = true
-    const controller = new AbortController();
-    const getMessages = async ()=> {
-      try {
-
-        const response = await axiosPrivate.get( `/message/${currentChat._id}`, {
-            signal: controller.signal
-          }
-        )
-        const result = response.data
-      isMounted && setMessages(result)
-        
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getMessages()
-  }, [ axiosPrivate,currentChat ] )
-  
-  useEffect( () =>
-  {
-    scrollRef.current?.scrollIntoView({behavior: 'smooth'})
-  }, [ messages ] )
   
 
   
@@ -208,13 +139,24 @@ export const DashboardProvider = ({children}) =>
       );
       
       const result = await response.data
-      setTimeout( () =>
-      {
-        setIsLoggedIn( false )
-        setAuth( result )
+      const user = {
+        id : result.id,
+        name: result.name,
+        email: result.email,
+        telephone: result.phoneNumber,
+        roles: result.role,
+        city: result.city, 
+        src: result.src,
+        state: result.state,
+        accessToken: result.accessToken
+      }
+        setAuth( user )
         setEmail( '' );
         setPassword( '' );
         navigate(from, {replace: true})
+      setTimeout( () =>
+      {
+        setIsLoggedIn( false )
       },2000)
       
     } catch ( err ) {
@@ -231,55 +173,6 @@ export const DashboardProvider = ({children}) =>
       setIsLoggedIn(false)
       errRef.current.focus()
     }
-  }
-
-  const sendPost = async (e) =>
-  {
-    e.preventDefault()
-    try {
-      const response = await axiosPrivate.post(
-        POST_URL,
-        JSON.stringify( { title, post: message, name: auth.name, email: auth.email } )
-      );
-      const result = await response.data
-      console.log( result );
-      setTitle( '' )
-      setMessage('')
-    } catch (err) {
-      if ( !err.response ) {
-        setErrMsg('No server response')
-      } else if (err.response?.status === 400){
-        setErrMsg('All feilds are required')
-      } else {
-        setErrMsg('Unable to create post')
-      }
-      errRef.current.focus()
-      navigate('auth/login', {state: {from :location}, replace: true})
-    }
-  }
-
-
-  const getPost = async (isMounted,controller) =>
-    {
-      try {
-        const response = await axiosPrivate.get(
-          POST_URL, {
-            signal: controller.signal
-          }
-        )
-        const result = response.data
-      isMounted && setPosts(result)
-      } catch (err) {
-        if ( !err.response ) {
-          setErrMsg('No server response')
-        } else if ( err.response?.status === 204 ) {
-          setErrMsg('No user to display')
-        } else {
-          setErrMsg('Unable to get post pls try again later')
-        }
-        errRef.current.focus()
-        navigate('auth/login', {state: {from :location}, replace: true})
-      }
   }
   
   const getUsers = async (isMounted, controller) =>
@@ -304,53 +197,15 @@ export const DashboardProvider = ({children}) =>
       }
   }
 
-  const handleNewMessage = async ( e ) =>
-  {
-    e.preventDefault()
-    const message = {
-      sender: auth.id,
-      text: newMessage,
-      conversationId : currentChat._id
-    }
-
-    const receiverId = currentChat.members.find(member => member !== auth.id)
-
-    socket.current.emit( 'sendMessage', {
-      senderId: auth.id,
-      receiverId,
-      text: newMessage
-    })
-    try {
-      const response = await axiosPrivate.post( '/message', message );
-      setMessages( [ ...messages, response.data ] )
-      setNewMessage('')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const handelLogout = async (e) =>
-  {
-    e.preventDefault()
-    try {
-      await axiosPrivate.get( LOGOUT_URL )
-      setAuth({})
-      } catch (err) {
-        console.log(err)
-        errRef.current.focus()
-        navigate('auth/login', {state: {from :location}, replace: true})
-      }
-  }
-  
 
 
   return (
-    <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth, getPost,user, getUsers,handleNewMessage,conversations, setConversations,currentChat, setCurrentChat,messages, setMessages,newMessage, setNewMessage, arivalMessage, setArrivalMessage, socket, scrollRef, handelLogout, isLoggedIn,persist, setPersist
+    <MainContext.Provider value={ {
+      title,message,setMessage,setTitle, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth,user, getUsers,isLoggedIn,persist, setPersist
     }}>
       {children}
-    </DashboardContext.Provider>
+    </MainContext.Provider>
   )
 };
 
-export default DashboardContext
+export default MainContext;

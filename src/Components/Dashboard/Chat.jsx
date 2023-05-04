@@ -3,12 +3,12 @@ import { Alert, Button, Col, Container, FormControl, Row } from 'react-bootstrap
 import {BsSend} from 'react-icons/bs'
 import Conversation from './chat/Conversation';
 import Message from './chat/Message';
-import useAuth from '../../hooks/useAuth'
+import useChatContext from '../../hooks/useChatContext';
 
 
 const Chat = () =>
 {
-  const { auth, handleNewMessage,conversations,currentChat, setCurrentChat,messages, newMessage, setNewMessage, setArrivalMessage, socket, scrollRef } = useAuth()
+  const { auth, handleNewMessage,conversations,currentChat, setCurrentChat,messages, newMessage, setNewMessage, setArrivalMessage, socket, scrollRef } = useChatContext()
 
 
   useEffect( () =>
@@ -16,7 +16,7 @@ const Chat = () =>
     socket.current.on( 'getMessage', data =>
     {
       setArrivalMessage( {
-        sender: data.senderId,
+        senderId: data.senderId,
         text: data.text,
         createdAt: Date.now()
       })

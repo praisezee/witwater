@@ -1,9 +1,9 @@
-import DashboardContext from '../Components/context/Context';
+import MainContext from '../Components/context/Context';
 import { useContext } from 'react';
 
 const useAuth = () =>
 {
-      return useContext( DashboardContext );
+      return useContext( MainContext );
 };
 
 export default useAuth

@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 const Login = () =>
 {
   const userRef = useRef()
-  const { errRef, email, password, errMsg, setErrMsg, handleLogin, setEmail, setPassword, isLoggedIn, persist, setPresist } = useAuth()
+  const { errRef, email, password, errMsg, setErrMsg, handleLogin, setEmail, setPassword, isLoggedIn, persist, setPersist } = useAuth()
 
   
   
@@ -24,7 +24,7 @@ const Login = () =>
 
   const togglePersist = () =>
   {
-    setPresist( prev => !prev );
+    setPersist( prev => !prev );
   }
   useEffect( () =>
   {
