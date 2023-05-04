@@ -28,7 +28,7 @@ const PersistLogin = () =>
     console.log(auth)
 
     return () => isMounted = false;
-  },[auth, refresh])
+  },[])
   return (
     <>
       { !persist ?
