@@ -78,7 +78,7 @@ useEffect( () =>{
     const getMessages = async ()=> {
       try {
 
-        const response = await axiosPrivate.get( `/message/${currentChat._id}`, {
+        const response = await axiosPrivate.get( `/message/${currentChat?._id}`, {
             withCredentials: true,
             signal: controller.signal
           }
