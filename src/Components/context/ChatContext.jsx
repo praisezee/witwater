@@ -17,7 +17,11 @@ export const ChatProvider = ( { children } ) =>
   const [ newMessage, setNewMessage ] = useState( '' )
   const [arivalMessage, setArrivalMessage] = useState(null)
   const scrollRef = useRef()
-  const socket = useRef( io( SOCKET_URL ) )
+  const socket = useRef( )
+
+useEffect( () =>{
+   socket.current = io( SOCKET_URL )
+},[])
   
     useEffect( () =>
   {
