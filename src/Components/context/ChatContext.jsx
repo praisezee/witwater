@@ -27,7 +27,7 @@ useEffect( () =>{
        text: data.text,
        createdAt: Date.now()
 })
-}
+})
 },[])
   
     useEffect( () =>
