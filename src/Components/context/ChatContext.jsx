@@ -137,7 +137,7 @@ useEffect( () =>{
       {children}
     </ChatContext.Provider>
   )
-};
+}
 
 
-export default ChatContext
+export default ChatContext;
