@@ -105,7 +105,7 @@ export const ChatProvider = ( { children } ) =>
     const receiverId = currentChat.members.find(member => member !== auth.id)
 
     socket.current.emit( 'sendMessage', {
-      senderId: auth.id,
+      sender: auth.id,
       receiverId,
       text: newMessage
     })
