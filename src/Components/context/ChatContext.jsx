@@ -21,6 +21,12 @@ export const ChatProvider = ( { children } ) =>
 
 useEffect( () =>{
    socket.current = io( SOCKET_URL )
+   socket.current.on("getMessage", (data) =>{
+     setArrivalMessage({
+       sender : data.senderId,
+       text: data.text,
+       createdAt: Date.now()
+})
 },[])
   
     useEffect( () =>
