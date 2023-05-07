@@ -11,18 +11,7 @@ const Chat = () =>
   const { auth, handleNewMessage,conversations,currentChat, setCurrentChat,messages, newMessage, setNewMessage, setArrivalMessage, socket, scrollRef } = useChatContext()
 
 
-  useEffect( () =>
-  {
-    socket.current.on( 'getMessage', data =>
-    {
-      setArrivalMessage( {
-        senderId: data.senderId,
-        text: data.text,
-        createdAt: Date.now()
-      })
-    })
-
-  })
+  
 
   return (
     <div> 
