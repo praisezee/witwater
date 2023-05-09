@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button, Col, Container, FormControl, Row } from 'react-bootstrap';
 import {BsSend, BsArrowLeftCircle} from 'react-icons/bs'
 import Conversation from './chat/Conversation';
@@ -10,23 +10,27 @@ import axios from '../api/register'
 const Chat = () =>
 {
   const { auth, handleNewMessage, conversations, currentChat, setCurrentChat, messages, newMessage, setNewMessage, scrollRef } = useChatContext()
-    const [user, setUser]= useState(null)
 
+  const [ friendsName, setFriendsName ] = useState( '' )
+  
+
+    
   useEffect( () =>
   {
-    const friendId = conversations.map(conversation => conversation.members.find( member => member  !== auth.id))
+    const friendId = conversations.map( conversation => conversation.members.find( member => member !== auth.id ) )
     const getUser = async () =>
     {
       try {
         const response = await axios.get( '/user/'+friendId )
-        setUser( response.data )
+        setFriendsName( response.data )
       } catch (err) {
         console.log(err);
       }
     }
-    getUser()
-  },[auth, conversations])
-  
+      getUser()
+  }, [conversations, auth])
+
+
   const handleClick = () =>
   {
     setCurrentChat(null)
@@ -42,7 +46,7 @@ const Chat = () =>
               <FormControl type='text' placeholder='search for chat' className='w-75' />
               { conversations.map( conversation => 
                 <div onClick={()=>setCurrentChat(conversation)}>
-                  <Conversation user={user} />
+                  <Conversation conversation={conversation} auth={auth} />
                 </div>
               )
               }
@@ -51,7 +55,7 @@ const Chat = () =>
           { currentChat ?
             (
               <Col md={ 8 } className='Main d-none d-md-block'>
-                <p className="h6 text-uppercase">{ user?.name }</p>
+                <p className="h4 text-uppercase">{friendsName.name}</p>
             <div className='w-100 Chat'>
                   { messages.map( message => 
                     <div ref={scrollRef}>
@@ -88,7 +92,7 @@ const Chat = () =>
               <FormControl type='text' placeholder='search for chat' className='w-75' />
               { conversations.map( conversation => 
                 <div onClick={()=>setCurrentChat(conversation)}>
-                  <Conversation user={user}/>
+                  <Conversation conversation={conversation} auth={auth}/>
                 </div>
               )
               }
@@ -101,7 +105,7 @@ const Chat = () =>
               </Button>
 
               <p className="h4 text-capitalize text-center">
-                {user?.name}
+                {friendsName.name}
               </p>
           </div>
           <div className='w-100 Chat'>
