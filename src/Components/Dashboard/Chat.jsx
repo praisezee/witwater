@@ -1,35 +1,15 @@
-import React, { useEffect, useState } from 'react'
+
 import { Alert, Button, Col, Container, FormControl, Row } from 'react-bootstrap';
-import {BsSend, BsArrowLeftCircle} from 'react-icons/bs'
+import { BsSend } from 'react-icons/bs'
 import Conversation from './chat/Conversation';
 import Message from './chat/Message';
 import useChatContext from '../../hooks/useChatContext';
-import axios from '../api/register'
+
 
 
 const Chat = () =>
 {
   const { auth, handleNewMessage, conversations, currentChat, setCurrentChat, messages, newMessage, setNewMessage, scrollRef } = useChatContext()
-
-  const [ friendsName, setFriendsName ] = useState( null )
-  
-
-  const friends = conversations.map( conversation => conversation?.members )
-  const friendId = friends.map(friend => friend !== auth.id)
-    
-  useEffect( () =>
-  {
-    const getUser = async () =>
-    {
-      try {
-        const response = await axios.get( '/user/'+friendId )
-        setFriendsName( response.data )
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getUser()
-  }, [friendId])
 
 
   const handleClick = () =>
@@ -56,11 +36,11 @@ const Chat = () =>
           { currentChat ?
             (
               <Col md={ 8 } className='Main d-none d-md-block'>
-                <p className="h4 text-uppercase">{friendsName?.name}</p>
+                <p className="h4 text-uppercase"></p>
             <div className='w-100 Chat'>
                   { messages.map( message => 
                     <div ref={scrollRef}>
-                      <Message message={ message } own={message.sender === auth.id}  />
+                      <Message message={ message } own={message.sender === auth.id} handleClick={handleClick}  />
                     </div>
                     )
                   }
@@ -100,19 +80,10 @@ const Chat = () =>
             </div>
           </Col>
           <Col xs={ 12 } className={ currentChat ? 'z-1 Main d-md-none d-block' : 'd-none' }>
-            <div className="d-flex justify-content-between align-item center bg-dark text-white m-0 p-0">
-              <Button onClick={handleClick} variant='dark'>
-                <BsArrowLeftCircle/>
-              </Button>
-
-              <p className="h4 text-capitalize text-center">
-                {friendsName?.name}
-              </p>
-          </div>
           <div className='w-100 Chat'>
                 { messages.map( message => 
                   <div ref={scrollRef}>
-                    <Message message={ message } own={message.sender === auth.id} />
+                    <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
                   </div>
                   )
                 }
