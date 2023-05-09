@@ -1,25 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { BsPersonCircle } from 'react-icons/bs';
-import axios from '../../api/register'
 
-const Conversation = ( { conversation, currentUser } ) =>
+const Conversation = ( { user } ) =>
 {
-  const [user, setUser]= useState(null)
 
-  useEffect( () =>
-  {
-    const friendId = conversation.members.find( member => member  !== currentUser.id)
-    const getUser = async () =>
-    {
-      try {
-        const response = await axios.get( '/user/'+friendId )
-        setUser( response.data )
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getUser()
-  },[currentUser, conversation])
 
 
   return (
