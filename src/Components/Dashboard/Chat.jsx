@@ -15,7 +15,7 @@ const Chat = () =>
   
 
     
-  useEffect( () =>
+  /*useEffect( () =>
   {
     const friendId = conversations.map( conversation => conversation.members.find( member => member !== auth.id ) )
     const getUser = async () =>
@@ -28,7 +28,7 @@ const Chat = () =>
       }
     }
       getUser()
-  }, [conversations, auth])
+  }, [conversations, auth])*/
 
 
   const handleClick = () =>
