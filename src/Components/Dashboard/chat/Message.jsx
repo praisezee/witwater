@@ -1,7 +1,4 @@
-
 import { format } from 'timeago.js'
-import { BsArrowLeftCircle } from 'react-icons/bs'
-import { Button } from 'react-bootstrap';
 
 const Message = ( { message, own } ) =>
 {
