@@ -1,6 +1,6 @@
 
 import { Alert, Button, Col, Container, FormControl, Row } from 'react-bootstrap';
-import { BsSend } from 'react-icons/bs'
+import { BsSend,BsArrowLeftCircle } from 'react-icons/bs'
 import Conversation from './chat/Conversation';
 import Message from './chat/Message';
 import useChatContext from '../../hooks/useChatContext';
@@ -37,7 +37,16 @@ const Chat = () =>
             (
               <Col md={ 8 } className='Main d-none d-md-block'>
                 <p className="h4 text-uppercase"></p>
-            <div className='w-100 Chat'>
+                <div className='w-100 Chat'>
+                  <div className="sticky-top d-flex justify-content-between align-item center bg-dark text-white m-0 p-0">
+                    <Button onClick={handleClick} variant='dark'>
+                      <BsArrowLeftCircle/>
+                    </Button>
+
+                    <p className="h4 text-capitalize text-center">
+                      
+                    </p>
+                  </div>
                   { messages.map( message => 
                     <div ref={scrollRef}>
                       <Message message={ message } own={message.sender === auth.id} handleClick={handleClick}  />
@@ -80,13 +89,22 @@ const Chat = () =>
             </div>
           </Col>
           <Col xs={ 12 } className={ currentChat ? 'z-1 Main d-md-none d-block' : 'd-none' }>
-          <div className='w-100 Chat'>
-                { messages.map( message => 
-                  <div ref={scrollRef}>
-                    <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
-                  </div>
-                  )
-                }
+            <div className='w-100 Chat'>
+              <div className="sticky-top d-flex justify-content-between align-item center bg-dark text-white m-0 p-0">
+              <Button onClick={handleClick} variant='dark'>
+                <BsArrowLeftCircle/>
+              </Button>
+
+              <p className="h4 text-capitalize text-center">
+                
+              </p>
+            </div>
+            { messages.map( message => 
+              <div ref={scrollRef}>
+                <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
+              </div>
+              )
+            }
           </div>
           <div className='d-flex align-item-center justify-content-evenly h-5'>
                 <FormControl
