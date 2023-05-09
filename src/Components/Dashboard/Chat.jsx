@@ -11,13 +11,14 @@ const Chat = () =>
 {
   const { auth, handleNewMessage, conversations, currentChat, setCurrentChat, messages, newMessage, setNewMessage, scrollRef } = useChatContext()
 
-  const [ friendsName, setFriendsName ] = useState( '' )
+  const [ friendsName, setFriendsName ] = useState( null )
   
 
+  const friends = conversations.map( conversation => conversation?.members )
+  const friendId = friends.map(friend => friend !== auth.id)
     
-  /*useEffect( () =>
+  useEffect( () =>
   {
-    const friendId = conversations.map( conversation => conversation.members.find( member => member !== auth.id ) )
     const getUser = async () =>
     {
       try {
@@ -27,8 +28,8 @@ const Chat = () =>
         console.log(err);
       }
     }
-      getUser()
-  }, [conversations, auth])*/
+    getUser()
+  }, [friendId])
 
 
   const handleClick = () =>
@@ -55,7 +56,7 @@ const Chat = () =>
           { currentChat ?
             (
               <Col md={ 8 } className='Main d-none d-md-block'>
-                <p className="h4 text-uppercase">{friendsName.name}</p>
+                <p className="h4 text-uppercase">{friendsName?.name}</p>
             <div className='w-100 Chat'>
                   { messages.map( message => 
                     <div ref={scrollRef}>
@@ -105,7 +106,7 @@ const Chat = () =>
               </Button>
 
               <p className="h4 text-capitalize text-center">
-                {friendsName.name}
+                {friendsName?.name}
               </p>
           </div>
           <div className='w-100 Chat'>
