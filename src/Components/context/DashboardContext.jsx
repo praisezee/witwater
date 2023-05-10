@@ -47,7 +47,6 @@ export const DashboardProvider = ( { children } ) =>
       try {
         const response = await axiosPrivate.get(
           POST_URL, {
-            withCredentials: true,
             signal: controller.signal
           }
         )
