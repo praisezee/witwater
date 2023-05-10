@@ -18,7 +18,7 @@ const useAxiosPrivate = () =>
         }
         return config
       },
-      err => Promise.reject(err)
+      (err) => Promise.reject(err)
     )
 
     const responseIntercept = axiosPrivate.interceptors.response.use(
