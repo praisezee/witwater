@@ -54,7 +54,6 @@ useEffect( () =>{
       try {
         const response = await axiosPrivate.get( `conversation/${ auth.id }`,
           {
-            withCredentials: true,
             signal: controller.signal
           }
         )
@@ -79,7 +78,6 @@ useEffect( () =>{
       try {
 
         const response = await axiosPrivate.get( `/message/${currentChat?._id}`, {
-            withCredentials: true,
             signal: controller.signal
           }
         )
@@ -121,9 +119,7 @@ useEffect( () =>{
       text: newMessage
     })
     try {
-      const response = await axiosPrivate.post( '/message', message, {
-        withCredentials: true,
-      } );
+      const response = await axiosPrivate.post( '/message', message);
       setMessages( [ ...messages, response.data ] )
       setNewMessage('')
     } catch (err) {
