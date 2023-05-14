@@ -8,18 +8,10 @@ const Videographer = () => {
   const { user, getUsers } = useAuth()
   useEffect( () =>
   {
-    let isMounted = true
-    const controller = new AbortController();
     
-    getUsers( isMounted, controller );
-
-    return () =>
-    {
-      isMounted = false;
-      controller.abort()
-    }
-  }, [] )
-  const videographers = user.filter( model => model.role.toLowecase() === 'videographer' )
+    getUsers();
+  }, [getUsers] )
+  const videographers = user.filter( model => model.role.toLowerCase() === 'videographer' )
   return (
     <Container fluid className='my-5 min-vh-100'>
       { videographers.length ? (
@@ -27,7 +19,7 @@ const Videographer = () => {
           { videographers.map(
             videographer => (
               <Col xs={ 10 } md={ 6 } lg={ 4 }>
-                <Link to={`dashboard/${videographer.id}`}>
+                <Link to={`../dashboard/${videographer.id}`}>
                   <Card>
                     <CardImg src={ videographer.src } />
                     <Card.Text>{ videographer.name }</Card.Text>

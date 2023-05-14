@@ -20,6 +20,7 @@ import RequireAuth from './Components/RequireAuth'
 import PersistLogin from "./Components/PersistLogin";
 import { DashboardProvider } from "./Components/context/DashboardContext";
 import { ChatProvider } from "./Components/context/ChatContext";
+import Profile from "./Components/Dashboard/Profile";
 
 
 const App= ()=> {
@@ -60,7 +61,8 @@ const App= ()=> {
               <ChatProvider>
                 <Chat/>
               </ChatProvider>
-          }/>
+          } />
+            <Route path="profile" element={ <Profile/> } />
         </Route>
       </Route>
     </Route>

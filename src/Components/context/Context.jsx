@@ -175,16 +175,14 @@ export const MainProvider = ({children}) =>
     }
   }
   
-  const getUsers = async (isMounted, controller) =>
+  const getUsers = async () =>
   {
     try {
         const response = await axios.get(
-          USER_URL, {
-            signal: controller.signal
-          }
+          USER_URL
         )
-        const result = response.data
-      isMounted && setUser(result)
+      const result = response.data;
+      setUser( result )
       } catch (err) {
         if ( !err?.response ) {
           setErrMsg('No server response')
@@ -193,7 +191,6 @@ export const MainProvider = ({children}) =>
         } else {
           setErrMsg('Unable to get post pls try again later')
         }
-      errRef.current.focus()
       }
   }
 
