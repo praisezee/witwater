@@ -4,8 +4,8 @@ import { io } from 'socket.io-client';
 import useAuth from "../../hooks/useAuth";
 
 const ChatContext = createContext( {} );
-const SOCKET_URL = 'ws://witwater-server.onrender.com'
-//const DEV_SOCKET = 'wss://localhost:3500'
+const SOCKET_URL = 'wss://witwater-server.onrender.com'
+//const DEV_SOCKET = 'ws://localhost:3500'
 export const ChatProvider = ( { children } ) =>
 {
   const {auth, setErrMsg, errRef} = useAuth()
