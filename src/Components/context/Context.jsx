@@ -139,18 +139,7 @@ export const MainProvider = ({children}) =>
       );
       
       const result = await response.data
-      const user = {
-        id : result.id,
-        name: result.name,
-        email: result.email,
-        telephone: result.phoneNumber,
-        roles: result.role,
-        city: result.city, 
-        src: result.src,
-        state: result.state,
-        accessToken: result.accessToken
-      }
-        setAuth( user )
+        setAuth( result )
         setEmail( '' );
         setPassword( '' );
         navigate(from, {replace: true})

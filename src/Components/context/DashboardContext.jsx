@@ -1,6 +1,7 @@
 import { createContext, useState} from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const DashboardContext = createContext( {} );
 
@@ -15,6 +16,8 @@ export const DashboardProvider = ( { children } ) =>
   const [posts, setPosts] = useState([])
   const [ title, setTitle ] = useState( '' );
   const [ message, setMessage ] = useState( '' );
+  const navigate = useNavigate()
+
 
 
 
@@ -24,7 +27,7 @@ export const DashboardProvider = ( { children } ) =>
     try {
       const response = await axiosPrivate.post(
         POST_URL,
-        JSON.stringify( { title, post: message, senderId: auth.id } )
+        JSON.stringify( { title, post: message, id: auth.id } )
       );
       await response.data
       setTitle( '' )
@@ -51,6 +54,7 @@ export const DashboardProvider = ( { children } ) =>
           }
         )
         const result = response.data
+        console.log( result )
       isMounted && setPosts(result)
       } catch (err) {
         if ( !err?.response ) {
@@ -63,10 +67,24 @@ export const DashboardProvider = ( { children } ) =>
       }
   }
 
+  const deleteAccount = async () =>
+  {
+    console.log('clicked')
+    try {
+      const response = await axiosPrivate.delete( `/user/${ auth.id }`, {
+      withCredentials: true
+      } )
+      console.log( response.data )
+      navigate('..')
+    } catch ( err ) {
+      console.log(err)
+    }
+  }
+
   
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost
+      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount
     }}>
       {children}
     </DashboardContext.Provider>
