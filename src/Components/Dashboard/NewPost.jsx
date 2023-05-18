@@ -5,7 +5,7 @@ import useDashboardContext from '../../hooks/useDashboardContext'
 
 const NewPost = () =>
 {
-  const { title, setTitle, message, setMessage, sendPost, image, setImage, errMsg, errRef } = useDashboardContext()
+  const { title, setTitle, message, setMessage, sendPost, errMsg, errRef } = useDashboardContext()
   return (
     <Container fluid className='Main'>
       <p className="text-center text-uppercase text-center h1 fw-bold py-1">Add new post</p>
@@ -19,14 +19,6 @@ const NewPost = () =>
           required
           value={ title }
           onChange={(e)=>setTitle(e.target.value)}
-        />
-        <FormLabel htmlFor='images' className='py-1'>Add Image</FormLabel>
-        <FormControl
-          type='file'
-          placeholder='Add an image'
-          id='images'
-          value={ image }
-          onChange={(e)=>setImage(e.target.value)}
         />
         <FormLabel htmlFor='post' className='pt-3'>Post</FormLabel>
         <FormControl

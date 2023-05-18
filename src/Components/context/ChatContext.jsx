@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 
 const ChatContext = createContext( {} );
 const SOCKET_URL = 'wss://witwater-server.onrender.com'
-//const DEV_SOCKET = 'ws://localhost:3500'
+const DEV_SOCKET = 'ws://localhost:3500'
 export const ChatProvider = ( { children } ) =>
 {
   const {auth, setErrMsg, errRef} = useAuth()
@@ -15,17 +15,18 @@ export const ChatProvider = ( { children } ) =>
   const [ currentChat, setCurrentChat ] = useState( null )
   const [ messages, setMessages ] = useState( [] )
   const [ newMessage, setNewMessage ] = useState( '' )
-  const [arivalMessage, setArrivalMessage] = useState(null)
+  const [ arivalMessage, setArrivalMessage ] = useState( null )
+  const [friend, setFriend] = useState({})
   const scrollRef = useRef()
   const socket = useRef( )
 
 useEffect( () =>{
-   socket.current = io( SOCKET_URL )
-   socket.current.on("getMessage", (data) =>{
-     setArrivalMessage({
-       sender : data.senderId,
-       text: data.text,
-       createdAt: Date.now()
+  socket.current = io( SOCKET_URL )
+  socket.current.on("getMessage", (data) =>{
+    setArrivalMessage({
+      sender : data.senderId,
+      text: data.text,
+      createdAt: Date.now()
 })
 })
 },[])
@@ -69,7 +70,23 @@ useEffect( () =>{
       isMounted = false
       controller.abort()
     }
-  }, [ auth,axiosPrivate] )
+  }, [ auth, axiosPrivate ] )
+  
+  useEffect( () =>
+  {
+    const friendId = conversations.map(c => c?.members.find( member => member  !== auth?.id))
+    const getFriend = async () =>
+    {
+      try {
+        const response = await axiosPrivate( `/user/${ friendId }` )
+        setFriend(response.data)
+    } catch (err) {
+      console.log(err)
+    }
+    }
+    getFriend()
+  }, [conversations, auth, axiosPrivate])
+
   useEffect( () =>
   {
     let isMounted = true
@@ -129,7 +146,7 @@ useEffect( () =>{
 
   return (
     <ChatContext.Provider value={ {
-      errRef, setErrMsg, auth, handleNewMessage,conversations, setConversations,currentChat, setCurrentChat,messages, setMessages,newMessage, setNewMessage, arivalMessage, setArrivalMessage, socket, scrollRef
+      errRef, setErrMsg, auth, handleNewMessage,conversations, setConversations,currentChat, setCurrentChat,messages, setMessages,newMessage, setNewMessage, arivalMessage, setArrivalMessage, socket, scrollRef, friend
     }}>
       {children}
     </ChatContext.Provider>

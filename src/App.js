@@ -21,6 +21,8 @@ import PersistLogin from "./Components/PersistLogin";
 import { DashboardProvider } from "./Components/context/DashboardContext";
 import { ChatProvider } from "./Components/context/ChatContext";
 import Profile from "./Components/Dashboard/Profile";
+import User from "./Components/Dashboard/User";
+import SinglePost from "./Components/Dashboard/SinglePost";
 
 
 const App= ()=> {
@@ -54,8 +56,11 @@ const App= ()=> {
       }>
       <Route element={<RequireAuth/>}>
         <Route path="dashboard" element={<DashboardLayout/>}>
-          <Route index element={ <DashHome /> } />
-          {/* <Route path=":id" element={<NewPost/>} /> */}
+            <Route index element={ <DashHome /> } />
+            <Route path=":id" element={ <User /> } />
+            <Route path="post">
+              <Route path=":id" element={ <SinglePost/> } />
+            </Route>
           <Route path="new-post" element={ <NewPost /> } />
             <Route path="chat" element={
               <ChatProvider>

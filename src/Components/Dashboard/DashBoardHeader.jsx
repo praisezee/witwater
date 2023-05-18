@@ -17,47 +17,47 @@ const DashBoardHeader = () =>
   }
   return (
     <div>
-      <Navbar  bg="light" expand='lg' className="mb-3">
+      <Navbar  bg="light" className='py-0 height-50' expand='sm'>
           <Container fluid>
-            <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
-            <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" />
+            <Navbar.Brand className='f-percifico'>Witwater</Navbar.Brand>
+            <Navbar.Toggle/>
             <Navbar.Offcanvas
-              id='offcanvasNavbar-expand-lg'
-              aria-labelledby='offcanvasNavbar-expand-lg'
               placement="end"
             >
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title id='offcanvasNavbar-expand-lg'>
-                  Offcanvas
+                <Offcanvas.Title >
+                  Menu
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
-                <Nav className="justify-content-end flex-grow-1 pe">
-                <Nav.Link eventKey={1} className='my-2'>
-                  <Link className='nav-link text-info fs-5' to='/dashboard'>
-                    <BsHouse className='text-dark'/>
-                    <span className='mx-3'>Home</span>
+                <Nav className="justify-content-end flex-grow-1">
+                <Nav.Link eventKey={1} className='mx-2'>
+                  <Link className='nav-link text-secondary d-flex' to='/dashboard'>
+                    <BsHouse className='text-dark d-none my-auto d-md-block'/>
+                    <span className='mx-1 my-auto'>Home</span>
                   </Link>
                 </Nav.Link>
-                <Nav.Link eventKey={1} className='my-2'>
-                  <Link className='nav-link text-info fs-5' to='new-post'>
-                    <BsPlusLg className='text-dark'/>
-                    <span className='mx-3'>New Post</span>
+                <Nav.Link eventKey={2} className='mx-2'>
+                  <Link className='nav-link text-secondary d-flex' to='new-post'>
+                    <BsPlusLg className='text-dark d-none my-auto d-md-block'/>
+                    <span className='mx-1 my-auto'>New Post</span>
                   </Link>
                 </Nav.Link>
-                <Nav.Link eventKey={1} className='my-2'>
-                  <Link className='nav-link text-info fs-5' to='chat'>
-                    <BsChat className='text-dark'/>
-                    <span className='mx-3'>Chats</span>
+                <Nav.Link eventKey={3} className='mx-2'>
+                  <Link className='nav-link text-secondary d-flex' to='chat'>
+                    <BsChat className='text-dark d-none my-auto d-md-block'/>
+                    <span className='mx-1 my-auto'>Chats</span>
                   </Link>
                 </Nav.Link>
-                <Nav.Link eventKey={1} className='my-2'>
-                  <Link className='nav-link text-info fs-5' to='profile'>
-                    <BsPersonCircle className='text-dark'/>
-                    <span className='mx-3'>Profile</span>
+                <Nav.Link eventKey={4} className='mx-2'>
+                  <Link className='nav-link text-secondary d-flex' to='profile'>
+                    <BsPersonCircle className='text-dark d-none my-auto d-md-block'/>
+                    <span className='mx-1 my-auto'>Profile</span>
                   </Link>
                 </Nav.Link>
-                <Button variant='outline-primary' onClick={signOut}>Sign out</Button>
+                <div className="my-auto">
+                  <Button variant='outline-primary' onClick={signOut}>Sign out</Button>
+                </div>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

@@ -1,4 +1,3 @@
-
 import { Alert, Button, Col, Container, FormControl, Row } from 'react-bootstrap';
 import { BsSend,BsArrowLeftCircle } from 'react-icons/bs'
 import Conversation from './chat/Conversation';
@@ -9,7 +8,7 @@ import useChatContext from '../../hooks/useChatContext';
 
 const Chat = () =>
 {
-  const { auth, handleNewMessage, conversations, currentChat, setCurrentChat, messages, newMessage, setNewMessage, scrollRef } = useChatContext()
+  const { auth, handleNewMessage, conversations, currentChat, setCurrentChat, messages, newMessage, setNewMessage, scrollRef, friend } = useChatContext()
 
 
   const handleClick = () =>
@@ -18,7 +17,7 @@ const Chat = () =>
   }
 
   return (
-    <div className='w-100'> 
+    <div className='h-100 overflow-auto'> 
       <Container fluid>
         <Row className='d-none d-md-flex'>
           <Col md={ 4 } className='Main d-none d-md-block'>
@@ -36,34 +35,38 @@ const Chat = () =>
           { currentChat ?
             (
               <Col md={ 8 } className='Main d-none d-md-block'>
-                <p className="h4 text-uppercase"></p>
-                <div className='w-100 Chat'>
-                  <div className="sticky-top d-flex justify-content-between align-item center bg-dark text-white m-0 p-0">
+                <div className="d-flex flex-column vh-95">
+              <div className='w-100 flex-grow-1 overflow-auto'>
+                <div className="sticky-top justify-content-between d-flex align-item-center bg-dark text-white m-0 p-0">
+                  <div>
                     <Button onClick={handleClick} variant='dark'>
-                      <BsArrowLeftCircle/>
-                    </Button>
+                    <BsArrowLeftCircle/>
+                  </Button>
+                </div>
 
-                    <p className="h4 text-capitalize text-center">
-                      
+                  <div className='ms-5 my-auto flex-grow-1'>
+                    <p className="text-capitalize my-auto">
+                      {friend.name}
                     </p>
                   </div>
-                  { messages.map( message => 
-                    <div ref={scrollRef}>
-                      <Message message={ message } own={message.sender === auth.id} handleClick={handleClick}  />
-                    </div>
-                    )
-                  }
+              </div>
+              { messages.map( message => 
+                <div ref={scrollRef}>
+                  <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
+                </div>
+                )
+              }
             </div>
-            <div className='d-flex align-item-center justify-content-evenly h-5'>
-                  <FormControl
-                    as='textarea'
-                    placeholder='Enter your message...' className='w-75'
-                    value={newMessage}
-                    onChange={(e)=>setNewMessage(e.target.value)}
-                  />
-              <Button className='my-auto w-10' onClick={handleNewMessage}>
-                <BsSend className='bg-transparent text-white'/>
-              </Button>
+          <div className='d-flex align-item-center justify-content-evenly h-5'>
+                <FormControl
+                  placeholder='Enter your message...' className='fs-5 w-75'
+                  value={newMessage}
+                  onChange={(e)=>setNewMessage(e.target.value)}
+                />
+            <Button className='my-auto mx-2 w-25' onClick={handleNewMessage}>
+              <BsSend className='bg-transparent text-white'/>
+            </Button>
+          </div>
             </div>
           </Col>
             ) : (
@@ -74,7 +77,7 @@ const Chat = () =>
         }
         </Row>
         </Container>
-      <div className="w-100">
+      <div className="w-100 container-fluid d-block d-md-none">
         <Row className='d-block d-md-none'>
           <Col xs={ 12 } className={currentChat ? 'z-1 Main d-none' : 'd-block'}>
             <p className="h6 text-uppercase">My chat</p>
@@ -88,35 +91,40 @@ const Chat = () =>
               }
             </div>
           </Col>
-          <Col xs={ 12 } className={ currentChat ? 'z-1 Main d-md-none d-block' : 'd-none' }>
-            <div className='w-100 Chat'>
-              <div className="sticky-top d-flex justify-content-between align-item center bg-dark text-white m-0 p-0">
-              <Button onClick={handleClick} variant='dark'>
-                <BsArrowLeftCircle/>
-              </Button>
+          <Col xs={ 12 } className={ currentChat ? 'z-1 d-md-none d-block flex-grow-1' : 'd-none' }>
+            <div className="d-flex flex-column vh-95">
+              <div className='w-100 flex-grow-1 overflow-auto'>
+                <div className="sticky-top justify-content-between d-flex align-item-center bg-dark text-white m-0 p-0">
+                  <div>
+                    <Button onClick={handleClick} variant='dark'>
+                    <BsArrowLeftCircle/>
+                  </Button>
+                </div>
 
-              <p className="h4 text-capitalize text-center">
-                
-              </p>
-            </div>
-            { messages.map( message => 
-              <div ref={scrollRef}>
-                <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
+                  <div className='ms-5 my-auto flex-grow-1'>
+                    <p className="text-capitalize my-auto">
+                      {friend.name}
+                    </p>
+                  </div>
               </div>
-              )
-            }
-          </div>
+              { messages.map( message => 
+                <div ref={scrollRef}>
+                  <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
+                </div>
+                )
+              }
+            </div>
           <div className='d-flex align-item-center justify-content-evenly h-5'>
                 <FormControl
-                  as='textarea'
-                  placeholder='Enter your message...' className='w-75'
+                  placeholder='Enter your message...' className='fs-5 w-75'
                   value={newMessage}
                   onChange={(e)=>setNewMessage(e.target.value)}
                 />
-            <Button className='my-auto w-10' onClick={handleNewMessage}>
+            <Button className='my-auto mx-2 w-25' onClick={handleNewMessage}>
               <BsSend className='bg-transparent text-white'/>
             </Button>
           </div>
+            </div>
         </Col>
         </Row>
         </div>

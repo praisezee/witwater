@@ -26,17 +26,16 @@ body{
 .w-10{
       width: 10% !important;
 }
+.w-5{
+      width: 10% !important;
+}
 
 .h-5{
       height: 5% !important;
 }
 
-.Main {
-      height: calc(100vh - 20vh);
-      overflow-y: auto;
-}
 .Chat {
-      height: calc(100vh - 30vh);
+      height: calc(100vh - 19vh );
       overflow-y: auto;
 }
 
@@ -54,6 +53,14 @@ body{
 }
 .vh-75{
       height: 75vh !important;
+}
+
+.vh-95{
+      height: calc(100vh - 60px) !important;
+}
+
+.height-50{
+      max-height: 50px !important;
 }
 .expand:hover{
       transition: all 1s  linear;
@@ -73,9 +80,8 @@ body{
       display: grid;
       place-content: center;
 }
-
-.vh-75{
-      height: 75vh !important;
+.vh-10{
+      height: 40px !important;
 }
 .vh-50{
       height: 50vh !important;

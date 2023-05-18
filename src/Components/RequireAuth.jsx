@@ -6,7 +6,7 @@ const RequireAuth = () =>
   const { auth } = useAuth()
   const location = useLocation()
   return (
-    auth?.name
+    auth?.id
       ?<Outlet />
       :
       <Navigate

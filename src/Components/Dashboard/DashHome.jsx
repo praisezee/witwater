@@ -3,11 +3,12 @@ import { Container } from 'react-bootstrap';
 import Error from '../Error';
 import useDashboardContext from '../../hooks/useDashboardContext';
 import Post from './Post';
+import SkeletonLoader from '../Skeleton';
 
 const DashHome = () =>
 {
   
-  const { posts, getPost, errRef } = useDashboardContext();
+  const { posts, getPost, auth } = useDashboardContext();
   
   useEffect( () =>
   {
@@ -23,17 +24,15 @@ const DashHome = () =>
   }, [] )
   
   return (
-    <Container fluid className='Main'>
-      { posts.length ? (
-        <div>
+    <Container fluid >
+      {  posts.length &&
+        (<>
           {
           posts.map( post => (
-            <Post post={post}/>
+            <Post post={post} auth={auth}/>
         ))}
-        </div>
-      ) : (
-          <Error errRef={ errRef} />
-      ) }
+        </>)
+      }
     </Container>
   )
 }

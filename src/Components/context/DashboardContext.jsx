@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const DashboardContext = createContext( {} );
 
 const POST_URL = '/posts'
+const USER_URL = '/user'
 
 export const DashboardProvider = ( { children } ) =>
 {
@@ -16,6 +17,10 @@ export const DashboardProvider = ( { children } ) =>
   const [posts, setPosts] = useState([])
   const [ title, setTitle ] = useState( '' );
   const [ message, setMessage ] = useState( '' );
+  const [ userPost, setUserPost ] = useState( [] )
+  const [ user, setUser ] = useState( {} )
+  const [singlePost, setSinglePost] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
 
@@ -32,6 +37,7 @@ export const DashboardProvider = ( { children } ) =>
       await response.data
       setTitle( '' )
       setMessage('')
+      navigate('../dashboard')
     } catch (err) {
       if ( !err?.response ) {
         setErrMsg('No server response')
@@ -44,9 +50,38 @@ export const DashboardProvider = ( { children } ) =>
     }
   }
 
+  const getUserPost = async (id,isMounted,controller) =>
+  {
+    try {
+      const response = await axiosPrivate.get( `userPost/${ id }`, {
+        signal: controller.signal
+      } )
+      const result = await response.data
+      isMounted && setUserPost(result)
+      
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getUser = async (id) =>
+  {
+    setIsLoading(true)
+    try {
+      const response = await axiosPrivate.get( `${ USER_URL }/${ id }` )
+      const result = await response.data
+      setUser( result )
+      setTimeout( () =>
+      {
+        setIsLoading(false)
+      }, 3000)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const getPost = async (isMounted,controller) =>
-    {
+  {
       try {
         const response = await axiosPrivate.get(
           POST_URL, {
@@ -54,8 +89,11 @@ export const DashboardProvider = ( { children } ) =>
           }
         )
         const result = response.data
-        console.log( result )
-      isMounted && setPosts(result)
+        isMounted && setPosts( result )
+        setTimeout( () =>
+      {
+        setIsLoading(false)
+      }, 1000)
       } catch (err) {
         if ( !err?.response ) {
           setErrMsg('No server response')
@@ -67,13 +105,28 @@ export const DashboardProvider = ( { children } ) =>
       }
   }
 
+  const getSinglePost = async ( id, isMounted,controller ) =>
+  {
+      setIsLoading(true)
+    try {
+      const response = await axiosPrivate.get( `${ POST_URL }/${ id }`, {
+        signal: controller.signal
+      } )
+      const result = await response.data
+      isMounted && setSinglePost( result )
+      setTimeout( () =>
+      {
+        setIsLoading( false )
+      },2000)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const deleteAccount = async () =>
   {
-    console.log('clicked')
     try {
-      const response = await axiosPrivate.delete( `/user/${ auth.id }`, {
-      withCredentials: true
-      } )
+      const response = await axiosPrivate.delete( `/user/${ auth.id }` )
       console.log( response.data )
       navigate('..')
     } catch ( err ) {
@@ -81,10 +134,28 @@ export const DashboardProvider = ( { children } ) =>
     }
   }
 
+  const addConversation = async (id) =>
+  {
+    try {
+      const response = await axiosPrivate.post( '/conversation', JSON.stringify( { senderId: auth.id, receiverId: id } ) )
+      console.log( response.data )
+      navigate('../dashboard/chat')
+    } catch (err) {
+      if ( !err?.response ) {
+        console.log('no server response')
+      } else if ( err.response?.status === 409 ) {
+        console.log('duplicate conversation not allowed')
+        navigate('../dashboard/chat')
+      }else {
+        console.log(`failed to add id ${id} to chat conversation`)
+      }
+    }
+  }
+
   
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount
+      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount, getUserPost, userPost, getUser, user, getSinglePost, singlePost, isLoading, addConversation
     }}>
       {children}
     </DashboardContext.Provider>
