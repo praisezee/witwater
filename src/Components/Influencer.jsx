@@ -1,7 +1,8 @@
 import React,{useEffect} from 'react'
 import Error from './Error'
-import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
+import Profile from './Profile';
 
 const Influencer = () => {
   const { user, getUsers } = useAuth()
@@ -18,19 +19,14 @@ const Influencer = () => {
       controller.abort()
     }
   }, [] )
-  const influencers = user.filter(model => model.role.toLowecase() === 'influencer')
+  const influencers = user.filter(model => model.role.toLowerCase() === 'influencer')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { influencers.length ? (
         <Row>
           { influencers.map(
             influencer => (
-              <Col xs={ 10 } md={ 6 } lg={ 4 }>
-                <Card>
-                  <CardImg src={ influencer.src } />
-                  <Card.Text>{ influencer.name }</Card.Text>
-                </Card>
-              </Col>
+              <Profile user={influencer}/>
             )
           )}
         </Row>

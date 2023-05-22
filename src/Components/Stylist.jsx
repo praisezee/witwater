@@ -1,7 +1,8 @@
 import React,{useEffect} from 'react'
 import Error from './Error'
-import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
+import Profile from './Profile';
 
 const Stylist = () =>
 {
@@ -19,19 +20,14 @@ const Stylist = () =>
       controller.abort()
     }
   }, [] )
-  const stylist = user.filter( model => model.role.toLowecase() === 'stylist' );
+  const stylist = user.filter( model => model.role.toLowerCase() === 'stylist' );
   return (
     <Container fluid className='my-5 min-vh-100'>
       { stylist.length ? (
         <Row>
           { stylist.map(
             stylist => (
-              <Col xs={ 10 } md={ 6 } lg={ 4 }>
-                <Card>
-                  <CardImg src={ stylist.src } />
-                  <Card.Text>{ stylist.name }</Card.Text>
-                </Card>
-              </Col>
+              <Profile user={stylist}/>
             )
           ) }
         </Row>

@@ -1,23 +1,34 @@
 import React from 'react'
 import Error from './Error'
-import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
+import Profile from './Profile';
+import { useEffect } from 'react';
 
 const Artist = () => {
-  const {   user } = useAuth()
-  const artists = user.filter(model => model.role === 'artist')
+  const { user, getUsers } = useAuth()
+  
+    useEffect( () =>
+  {
+    let isMounted = true
+    const controller = new AbortController();
+    
+    getUsers( isMounted, controller );
+
+    return () =>
+    {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [] )
+  const artists = user.filter(model => model.role.toLowerCase() === 'artist')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { artists.length ? (
         <Row>
           { artists.map(
             artist => (
-              <Col xs={ 10 } md={ 6 } lg={ 4 }>
-                <Card>
-                  <CardImg src={ artist.src } />
-                  <Card.Text>{ artist.name }</Card.Text>
-                </Card>
-              </Col>
+              <Profile user={artist}/>
             )
           )}
         </Row>

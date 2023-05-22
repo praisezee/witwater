@@ -1,7 +1,8 @@
 import React,{useEffect} from 'react'
 import Error from './Error'
-import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
+import Profile from './Profile';
 
 const MaleModel = () => {
   const { user, getUsers } = useAuth()
@@ -18,19 +19,14 @@ const MaleModel = () => {
       controller.abort()
     }
   }, [] )
-  const maleModels = user.filter(model => model.role.toLowecase() === 'model' && model.gender.toLowecase() === 'male')
+  const maleModels = user.filter(model => model.role.toLowerCase()=== 'model' && model.gender.toLowerCase()=== 'male')
   return (
     <Container fluid className='my-5 min-vh-100'>
       { maleModels.length ? (
         <Row>
           { maleModels.map(
             maleModel => (
-              <Col xs={ 10 } md={ 6 } lg={ 4 }>
-                <Card>
-                  <CardImg src={ maleModel.src } />
-                  <Card.Text>{ maleModel.name }</Card.Text>
-                </Card>
-              </Col>
+              <Profile user={maleModel}/>
             )
           )}
         </Row>

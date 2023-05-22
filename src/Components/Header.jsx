@@ -7,9 +7,6 @@ import
   NavbarBrand,
   NavLink,
   Offcanvas,
-  Form,
-  FormControl,
-  Button,
   Row,
   Col
 } from 'react-bootstrap';
@@ -61,9 +58,8 @@ const Header = () =>
     <Navbar collapseOnSelect expand='none' sticky='top' variant='light' bg='white'>
       <Container fluid className='px-5'>
         <NavbarBrand >
-          <Link to='/' className='nav-link d-flex'>
-            <img src="/vite.svg" alt="" width='30' height='30' className='d-inline-block align-top' />
-            <p className="d-none d-sm-block ms-1 h3 f-percifico">Witwater</p>
+          <Link to='../' className='nav-link d-flex'>
+            <p className=" h3 f-percifico">Witwater</p>
           </Link>
         </NavbarBrand>
         <div className="ms-auto d-none d-md-flex me-5">
@@ -92,42 +88,42 @@ const Header = () =>
                 </div>
                 <Row className='text-center'>
                   <Col xs={ 6 } className='mx-auto'>
-                    <p className="text-muted h2 text-capitalize">News</p>
+                    <p className="text-muted h2 text-capitalize">Categories</p>
                     <NavLink eventKey={ 1 }>
-                      <Link to='' className='nav-link text-capitalize'>Trending</Link>
+                      <Link to='model/male' className='nav-link text-capitalize'>Male Models</Link>
                     </NavLink>
                     <NavLink eventKey={ 2 }>
-                      <Link to='' className='nav-link text-capitalize'>Ranking</Link>
+                      <Link to='model/female' className='nav-link text-capitalize'>Female Models</Link>
                     </NavLink>
                     <NavLink eventKey={ 3 }>
-                      <Link to='' className='nav-link text-capitalize'>News</Link>
+                      <Link to='../photographer' className='nav-link text-capitalize'>Photographer</Link>
                     </NavLink>
                     <NavLink eventKey={ 4 }>
-                      <Link to='' className='nav-link text-capitalize'>Interviews</Link>
+                      <Link to='../videographer' className='nav-link text-capitalize'>Videographer</Link>
                     </NavLink>
                     <NavLink eventKey={ 5 }>
-                      <Link to='' className='nav-link text-capitalize'>New Faces</Link>
+                      <Link to='../stylist' className='nav-link text-capitalize'>Hair stylist</Link>
                     </NavLink>
                     <NavLink eventKey={ 6 }>
-                      <Link to='' className='nav-link text-capitalize'>featured lists</Link>
+                      <Link to='../influencer' className='nav-link text-capitalize'>Influencer</Link>
                     </NavLink>
                   </Col>
                   <Col xs={ 6 }>
-                    <p className="text-muted h2 text-capitalize">Community</p>
+                    <p className="text-muted h2 text-capitalize">menu</p>
                     <NavLink eventKey={ 1 }>
-                      <Link to='' className='nav-link text-capitalize'>People</Link>
+                      <Link to='../' className='nav-link text-capitalize'>Home</Link>
                     </NavLink>
                     <NavLink eventKey={ 2 }>
-                      <Link to='' className='nav-link text-capitalize'>Agencies</Link>
+                      <Link to='contact' className='nav-link text-capitalize'>Contact Us</Link>
                     </NavLink>
-                    <NavLink eventKey={ 3 }>
-                      <Link to='' className='nav-link text-capitalize'>Show packages</Link>
+                    <NavLink className='disabled' eventKey={ 3 }>
+                      <Link className='nav-link text-capitalize disabled'>Copyright</Link>
                     </NavLink>
-                    <NavLink eventKey={ 4 }>
-                      <Link to='' className='nav-link text-capitalize'>updates</Link>
+                    <NavLink className='disabled' eventKey={ 4 }>
+                      <Link to='' className='nav-link text-capitalize disabled'>Help/FAQ</Link>
                     </NavLink>
-                    <NavLink eventKey={ 5 }>
-                      <Link to='' className='nav-link text-capitalize'>your lists</Link>
+                    <NavLink className='disabled' eventKey={ 5 }>
+                      <Link to='' className='nav-link text-capitalize disabled'>privacy statement</Link>
                     </NavLink>
                   </Col>
                 </Row>
@@ -148,15 +144,6 @@ const Header = () =>
                 <Row className="text-center">
                   <NavLink eventKey={ 1 }>
                       <Link to='' className='nav-link text-capitalize'>about witwater.com</Link>
-                    </NavLink>
-                    <NavLink eventKey={ 2 }>
-                      <Link to='' className='nav-link text-capitalize'>help/FAQ</Link>
-                    </NavLink>
-                    <NavLink eventKey={ 3 }>
-                      <Link to='' className='nav-link text-capitalize'>Contact os</Link>
-                    </NavLink>
-                    <NavLink eventKey={ 4 }>
-                      <Link to='' className='nav-link text-capitalize'>copyright</Link>
                     </NavLink>
                     <NavLink eventKey={ 5 }>
                       <Link to='' className='nav-link text-capitalize'>privacy statement</Link>

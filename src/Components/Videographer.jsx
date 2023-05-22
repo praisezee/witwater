@@ -1,8 +1,8 @@
 import React,{useEffect} from 'react'
 import Error from './Error'
-import { Card, CardImg, Col, Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import useAuth from '../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import Profile from './Profile';
 
 const Videographer = () => {
   const { user, getUsers } = useAuth()
@@ -18,14 +18,7 @@ const Videographer = () => {
         <Row>
           { videographers.map(
             videographer => (
-              <Col xs={ 10 } md={ 6 } lg={ 4 }>
-                <Link to={`../dashboard/${videographer.id}`}>
-                  <Card>
-                    <CardImg src={ videographer.src } />
-                    <Card.Text>{ videographer.name }</Card.Text>
-                  </Card>
-                </Link>
-              </Col>
+              <Profile user={videographer}/>
             )
           )}
         </Row>
