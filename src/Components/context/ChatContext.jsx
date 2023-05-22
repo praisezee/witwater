@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 
 const ChatContext = createContext( {} );
 const SOCKET_URL = 'wss://witwater-server.onrender.com'
-const DEV_SOCKET = 'ws://localhost:3500'
+//const DEV_SOCKET = 'ws://localhost:3500'
 export const ChatProvider = ( { children } ) =>
 {
   const {auth, setErrMsg, errRef} = useAuth()
@@ -21,7 +21,7 @@ export const ChatProvider = ( { children } ) =>
   const socket = useRef( )
 
 useEffect( () =>{
-  socket.current = io( DEV_SOCKET )
+  socket.current = io( SOCKET_URL )
   socket.current.on("getMessage", (data) =>{
     setArrivalMessage({
       sender : data.senderId,

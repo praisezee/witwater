@@ -3,7 +3,7 @@
       src: url(./assets/fonts/Pacifico/Pacifico-Regular.ttf);
 }
 body{
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
 }
 
@@ -52,11 +52,11 @@ body{
       letter-spacing: 4px;
 }
 .vh-75{
-      height: 75vh !important;
+      height: 75dvh !important;
 }
 
 .vh-95{
-      height: calc(100vh - 60px) !important;
+      height: calc(100dvh - 60px) !important;
 }
 
 .height-50{
