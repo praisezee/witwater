@@ -20,7 +20,7 @@ const Chat = () =>
     <div className='h-100 overflow-auto'> 
       <Container fluid>
         <Row className='d-none d-md-flex'>
-          <Col md={ 4 } className='Main d-none d-md-block'>
+          <Col md={ 4 } className='Main d-none d-md-block border-end'>
             <p className="h6 text-uppercase">My chat</p>
             <div className="p-0">
               <FormControl type='text' placeholder='search for chat' className='w-75' />
@@ -52,7 +52,7 @@ const Chat = () =>
               </div>
               { messages.map( message => 
                 <div ref={scrollRef}>
-                  <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
+                  <Message message={ message }  own={message.sender === auth.id} handleClick={handleClick} />
                 </div>
                 )
               }
@@ -70,9 +70,13 @@ const Chat = () =>
             </div>
           </Col>
             ) : (
-              <Alert variant='secondary' className='my-4 w-50 mx-auto py-5 fs-4 fw-bold'>
-                open a conversation to start a chat
-              </Alert>
+              <Col md={8} className='d-none d-md-block vh-95'>
+                <div className="d-flex h-100 align-items-center">
+                <Alert variant='info' className='my-4 mx-auto py-5 fs-4 fw-bold'>
+                  open a conversation to start a chat
+                </Alert>
+              </div>
+              </Col>
             )
         }
         </Row>

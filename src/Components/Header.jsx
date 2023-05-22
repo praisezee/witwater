@@ -67,16 +67,8 @@ const Header = () =>
           </Link>
         </NavbarBrand>
         <div className="ms-auto d-none d-md-flex me-5">
-          <Form className='d-flex mx-auto text-center w-100 px-2'>
-            <FormControl
-              type='search'
-              placeholder="Search"
-              className="me-2"
-              arial-label="search"
-            />
-            <Button variant='outline-primary'>Search</Button>
-          </Form>
-          <Link className='btn btn-outline-primary text-capitalize' to='auth/register'>join</Link>
+          <Link className='ms-auto me-2 btn btn-outline-primary text-capitalize' to='auth/register'>join</Link>
+          <Link className='ms-1 me-2 btn btn-outline-primary text-capitalize' to='auth/login'>login</Link>
         </div>
         <NavbarToggle aria-controls="responsive-navbar-nav" />
         <Navbar.Offcanvas className='vh-100' id="responsive-navbar-nav" placement='top'>
@@ -91,19 +83,12 @@ const Header = () =>
           <Offcanvas.Body>
             <Nav>
               <Container className='pb-5'>
-                <div className="w-100 mx-auto mb-5 d-flex d-md-none ">
-                  <Form className='d-flex mx-auto text-center w-100 px-2'>
-                    <FormControl
-                      type='search'
-                      placeholder="Search"
-                      className="me-2"
-                      arial-label="search"
-                    />
-                    <Button variant='outline-primary'>Search</Button>
-                  </Form>
-                  <NavLink eventKey={1} className='p-0'>
-                    <Link className='btn btn-outline-primary' to='auth/register'>Join</Link>
+                <div className="w-100 mx-auto mb-5 d-flex justify-content-between d-md-none ">
+                  <NavLink eventKey={ 1 } className='p-0'><Link className='ms-auto me-2 btn btn-outline-primary text-capitalize' to='auth/register'>join</Link></NavLink>
+                  <NavLink eventKey={ 1 } className='p-0'>
+                  <Link className='ms-1 me-2 btn btn-outline-primary text-capitalize' to='auth/login'>login</Link>
                   </NavLink>
+                  
                 </div>
                 <Row className='text-center'>
                   <Col xs={ 6 } className='mx-auto'>

@@ -48,7 +48,8 @@ export const MainProvider = ({children}) =>
   const [ matchFocus, setMatchFocus ] = useState( false )
   const [ validEmail, setValidEmail ] = useState( false )
   const [ emailFocus, setEmailFocus ] = useState( false )
-  const [persist, setPersist] = useState(JSON.parse(localStorage.getItem('persist')) || false)
+  const [ persist, setPersist ] = useState( JSON.parse( localStorage.getItem( 'persist' ) ) || false )
+  const [code,setCode] =  useState('')
 
   // useEffect to handle password check
   
@@ -71,7 +72,28 @@ export const MainProvider = ({children}) =>
     setErrMsg('')
   }, [ password, confirm, email ] )
 
-  
+  const verifyEmail = async () =>
+  {
+    try {
+      await axios.post( '/verify-code', JSON.stringify( email, code ),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        } )
+      navigate( '../login' )
+      setEmail('')
+      setCode('')
+    } catch (err) {
+      if ( !err?.res ) {
+        console.log('no server response')
+      } else if ( err.response.status === 400 ) {
+        console.log('invalid Verification code')
+        setErrMsg('invalid Verification code')
+      }
+
+      errRef.current.focus()
+    }
+  }
 
   
   // function to handle 
@@ -100,13 +122,17 @@ export const MainProvider = ({children}) =>
           withCredentials: true
         }
       )
+      await axios.post('/verify-mail',JSON.stringify({email}),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
       setSuccess( true )
       setName( '' )
       setGender( 'Select an option' )
       setRole( 'Select an option' )
       setCity( '' )
       setConfirm( '' )
-      setEmail( '' )
       setPassword( '' )
       setPhoneNumber( '' )
       setState( '' )
@@ -120,7 +146,7 @@ export const MainProvider = ({children}) =>
         setErrMsg('Registration failed. pls try again or contact the admin support')
       }
       setIsLoggedIn(false)
-      errRef.current.focus()
+      errRef?.current.focus()
     }
   }
 
@@ -187,7 +213,7 @@ export const MainProvider = ({children}) =>
 
   return (
     <MainContext.Provider value={ {
-      title,message,setMessage,setTitle, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth,user, getUsers,isLoggedIn,persist, setPersist
+      title,message,setMessage,setTitle, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth,user, getUsers,isLoggedIn,persist, setPersist, verifyEmail, code, setCode
     }}>
       {children}
     </MainContext.Provider>

@@ -27,7 +27,7 @@ const PersistLogin = () =>
     !auth?.accessToken && persist ? verifyRefreshToken() : setIsloading( false )
 
     return () => isMounted = false;
-  },[auth, refresh, persist])
+  },[])
   return (
     <>
       { !persist ?

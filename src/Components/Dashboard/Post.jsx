@@ -31,12 +31,12 @@ const Post = ( { post, auth } ) =>
     getUser()
   }, [ post ] )
   return (
-    <Row key={ post.id }>
+    <Row  key={ post._id }>
       { isLoading ?
         (
           <SkeletonLoader />
         ) : (
-          <Col xs={11} className='border mx-auto rounded rounded-3 my-3 py-2'>
+          <Col  xs={11} className='border mx-auto shadow-sm rounded rounded-3 my-3 py-2'>
             <Link to={auth.id === user.id ? 'profile' : `${user.id}`} className="d-flex nav-link">
               <div className="rounded-circle w-5 mx-auto border border-info">
                 <img src={user?.src !== '' ? user.src :user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female'? female : null} alt="" className='img-fluid w-100 rounded-circle' />

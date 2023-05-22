@@ -50,12 +50,12 @@ const App= ()=> {
     </Route>
     {/* protected routes */ }
       <Route element={
-        <DashboardProvider>
           <PersistLogin />
-        </DashboardProvider>
       }>
       <Route element={<RequireAuth/>}>
-        <Route path="dashboard" element={<DashboardLayout/>}>
+          <Route path="dashboard" element={
+            <DashboardProvider>
+            <DashboardLayout /> </DashboardProvider>}>
             <Route index element={ <DashHome /> } />
             <Route path=":id" element={ <User /> } />
             <Route path="post">

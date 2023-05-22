@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Container, FloatingLabel, Form, FormControl, Row, Col, Button, FormSelect, Spinner } from 'react-bootstrap';
+import { Container, FloatingLabel, Form, FormControl, Row, Col, Button, FormSelect, Spinner, FormLabel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
@@ -12,7 +12,7 @@ const Register = () =>
     userRef.current.focus()
   }, [])
 
-  const {errMsg, errRef, success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, isLoggedIn} = useAuth()
+  const {errMsg, errRef, success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, verifyEmail, isLoggedIn, code, setCode} = useAuth()
   return (
 <div className="py-4 min-vh-100">
   <div className="d-flex align-items-center h-100 w-100">
@@ -20,7 +20,9 @@ const Register = () =>
       <Container fluid>
         <Row className='border rounded py-5  w-75 mx-auto' >
           <p className="text-uppercase text-center">Registration successful</p>
-          <p className="h6">Your registration was successful. please check your email and click the link to verify your email</p>
+              <p className="h6">Your registration was successful. please check your email and enter the verification code sent</p>
+              <FormControl value={ code } onChange={ ( e ) => setCode( e.target.value ) } />
+              <Button variant='outline-primary' onClick={verifyEmail}>Verify</Button>
         </Row>
       </Container>
     )

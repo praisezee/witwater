@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react'
-import { BsPersonCircle } from 'react-icons/bs';
+import male from '../../../assets/male.jpg'
+import female from '../../../assets/female.jpg'
 import axios from '../../api/register'
 
 const Conversation = ( { conversation, auth } ) =>
@@ -24,12 +25,11 @@ const Conversation = ( { conversation, auth } ) =>
 
 
   return (
-    <div className='d-flex align-items-center mt-3 btn btn-outline-dark'>
-      { user?.src ?
-        <img src={ user.src  } alt="profile" className='img-fluid rounded-circle border me-3' width={ 40 } />
-        : <BsPersonCircle width={ 40 } className='img-fluid rounded-circle border me-3'/>
-      }
-      <span className='h6 text-capitalize my-auto'>{user?.name}</span>
+    <div className='d-flex align-items-center mt-3 btn btn-outline-primary'>
+    <div className="rounded-circle w-5 me-3 border border-primary">
+      <img className='img-fluid w-100 rounded-circle' src={ user?.src !== '' ? user?.src : user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female' ? female : null } alt="profile" />
+    </div>
+      <div className='h6 text-capitalize my-auto'>{user?.name}</div>
     </div>
   )
 }

@@ -6,18 +6,45 @@ import useDashboardContext from '../../hooks/useDashboardContext'
 import MyPost from './MyPost';
 import { useParams } from 'react-router-dom';
 import { BsChat } from 'react-icons/bs'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-const User = () => {
+const User = () =>
+{
+  const axiosPrivate = useAxiosPrivate()
   const {id} = useParams()
-  const { getUser, user, posts, addConversation } = useDashboardContext()
+  const {  user,setUser, addConversation } = useDashboardContext()
   const [ userPost, setUserPost ] = useState( [] )
 
   useEffect( () =>
   {
-    const myPost = posts.filter( post => post.senderId === id )
-    setUserPost(myPost)
-    getUser(id)
-  }, [] )
+    const getUser = async () =>
+  {
+    try {
+      const response = await axiosPrivate.get( `/user/${ id }` )
+      const result = await response.data
+      setUser( result )
+    } catch (err) {
+      console.log(err)
+    }
+    }
+    getUser()
+  },[id])
+
+  useEffect( () =>
+  {
+    const getSinglePost = async (  ) =>
+  {
+    try {
+      const response = await axiosPrivate.get( `/userPost/${ user?.id }` )
+      const result = await response.data;
+      setUserPost( result )
+    } catch (err) {
+      console.log(err)
+    }
+    }
+    
+    getSinglePost()
+  },[user])
 
   return (
     <main>
@@ -29,8 +56,8 @@ const User = () => {
                 <img className='img-fluid w-100 rounded-circle' src={ user.src !== '' ? user.src : user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female' ? female : null } alt="profile" />
               </div>
               <div className='my-auto flex-grow-1 d-block d-md-none mx-2'>
-                <div className="d-flex">
-                  <div>
+                <div className="d-flex justify-content-evenly">
+                  <div className='flex-grow-1'>
                     <p className="h5 text-primary my-auto text-center mx-auto">{ user.name }</p>
                     <p className="text-center mx-auto text-muted">{ user.email }</p>
                   </div>

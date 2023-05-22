@@ -20,7 +20,9 @@ export const DashboardProvider = ( { children } ) =>
   const [ userPost, setUserPost ] = useState( [] )
   const [ user, setUser ] = useState( {} )
   const [singlePost, setSinglePost] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [ isLoading, setIsLoading ] = useState( true )
+  const [ comments, setComments ] = useState( [] )
+  const [newComment, setNewComment] = useState('')
   const navigate = useNavigate()
 
 
@@ -151,11 +153,33 @@ export const DashboardProvider = ( { children } ) =>
       }
     }
   }
+  const sendComment = async (id) =>
+  {
+    try {
+      const response = await axiosPrivate.post( '/comment', JSON.stringify( { comment: newComment, senderId: auth.id, postId:id } ) )
+      const result = await response.data
+      setComments( [result, ...comments] )
+      setNewComment('')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getComment = async ( id ) =>
+  {
+    try {
+      const response = await axiosPrivate.get( `/comment/${id}` )
+      const result = response.data
+      setComments( result )
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount, getUserPost, userPost, getUser, user, getSinglePost, singlePost, isLoading, addConversation
+      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount, getUserPost, userPost, getUser, user,setUser, getSinglePost, singlePost, isLoading, addConversation, setNewComment, comments, setComments, newComment,sendComment, getComment,
     }}>
       {children}
     </DashboardContext.Provider>

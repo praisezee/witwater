@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { Container } from 'react-bootstrap';
-import Error from '../Error';
 import useDashboardContext from '../../hooks/useDashboardContext';
 import Post from './Post';
-import SkeletonLoader from '../Skeleton';
 
 const DashHome = () =>
 {
@@ -25,13 +23,18 @@ const DashHome = () =>
   
   return (
     <Container fluid >
-      {  posts.length &&
+      {  posts.length ?
         (<>
           {
           posts.map( post => (
             <Post post={post} auth={auth}/>
         ))}
-        </>)
+        </> )
+        : (
+          <div className="vh-75 center">
+            <p className='rounded border shadow-sm p-5'>No post to display</p>
+          </div>
+        )
       }
     </Container>
   )
