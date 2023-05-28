@@ -53,7 +53,7 @@ const User = () =>
           <Col xs={12} md={4} className='my-auto'>
             <div className="d-flex">
               <div className="rounded-circle w-25 mx-auto border border-info">
-                <img className='img-fluid w-100 rounded-circle' src={ user.src !== '' ? user.src : user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female' ? female : null } alt="profile" />
+                <img className='img-fluid w-100 rounded-circle' src={ user?.src !== '' ? user?.src : user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female' ? female : null } alt="profile" />
               </div>
               <div className='my-auto flex-grow-1 d-block d-md-none mx-2'>
                 <div className="d-flex justify-content-evenly">
