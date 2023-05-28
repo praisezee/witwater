@@ -158,7 +158,12 @@ export const DashboardProvider = ( { children } ) =>
     try {
       const response = await axiosPrivate.post( '/comment', JSON.stringify( { comment: newComment, senderId: auth.id, postId:id } ) )
       const result = await response.data
-      setComments( [result, ...comments] )
+      const comment = {
+        src:auth.src,
+        name: auth.name,
+        comment: result.comment
+      }
+      setComments( [comment, ...comments] )
       setNewComment('')
     } catch (err) {
       console.log(err)
