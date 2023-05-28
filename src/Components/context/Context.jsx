@@ -107,11 +107,9 @@ export const MainProvider = ({children}) =>
     if ( !v1 ) {
       setErrMsg( 'Email is not supported' );
       return;
-    } else if(!v2){
+    }
+ if(!v2){
 setErrMsg('Password must be 8 to 24 characters long which must include 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character')
-return;
-} else {
-setErrMsg('An error occured')
 return;
 }
     setIsLoggedIn( true )
