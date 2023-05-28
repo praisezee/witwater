@@ -75,7 +75,7 @@ export const MainProvider = ({children}) =>
   const verifyEmail = async () =>
   {
     try {
-      await axios.post( '/verify-code', JSON.stringify( email, code ),
+      await axios.post( '/verify-code', JSON.stringify({ email, code }),
         {
         headers: { "Content-Type": "application/json" },
         withCredentials: true
