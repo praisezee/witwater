@@ -23,7 +23,7 @@ const Choose = () => {
             <div className="ms-2 me-auto">
               <div className="fw-bold h3">Expertise</div>
               <p>
-                A company's expertise refers to its level of knowledge and experience in specific feild or industry. When it comes to modeling, <span className="f-percifico text-capitalize">witwater</span> has trained expertise on each aspect of modeling
+                A company's expertise refers to its level of knowledge and experience in specific field or industry. When it comes to modeling, <span className="f-percifico text-capitalize">witwater</span> has trained expertise on each aspect of modeling
               </p>
             </div>
           </li>
@@ -31,7 +31,7 @@ const Choose = () => {
             <div className="ms-2 me-auto">
               <div className="fw-bold h3">Flexibility</div>
               <p>
-                A flexible model company provide customized solutions that meet your specific modeling requirements. By working collaboratively with you and adapting its servicesto meet your needs.<span className="f-percifico text-capitalize">witwater</span> flexibility will bring a quick turnaround time, scalability and cost savings.
+                A flexible model company provide customized solutions that meet your specific modeling requirements. By working collaboratively with you and adapting its services to meet your needs.<span className="f-percifico text-capitalize">witwater</span> flexibility will bring a quick turnaround time, scalability and cost savings.
               </p>
             </div>
           </li>
@@ -39,7 +39,7 @@ const Choose = () => {
             <div className="ms-2 me-auto">
               <div className="fw-bold h3">Pricing</div>
               <p>
-                Pricing for a model company will depend on a variety of faactor and can vary significantly.It's important to consider the pricing structure, level of expertise and quality of services provided when choosing a model company to work with and <span className="f-percifico text-capitalize">witwater</span> provides an affordable pricing plan.
+                Pricing for a model company will depend on a variety of factor and can vary significantly.It's important to consider the pricing structure, level of expertise and quality of services provided when choosing a model company to work with and <span className="f-percifico text-capitalize">witwater</span> provides an affordable pricing plan.
               </p>
             </div>
           </li>

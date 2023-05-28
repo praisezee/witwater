@@ -23,6 +23,8 @@ import { ChatProvider } from "./Components/context/ChatContext";
 import Profile from "./Components/Dashboard/Profile";
 import User from "./Components/Dashboard/User";
 import SinglePost from "./Components/Dashboard/SinglePost";
+import About from "./Components/About";
+import Contact from "./Components/Home/Contact";
 
 
 const App= ()=> {
@@ -44,7 +46,9 @@ const App= ()=> {
         <Route index element={ <Model /> } />
         <Route path="male" element={ <MaleModel /> } />
         <Route path="female" element={<FemaleModel/>}/>
-      </Route>
+        </Route>
+        <Route path='about' element={ <About /> } />
+        <Route path="contact" element={<Contact/>}/>
       {/* catch all */}
       <Route path="*" element={ <Missing/> } />
     </Route>

@@ -21,19 +21,19 @@ const Header = () =>
       id: 1,
       name: <BsFacebook />,
       //this is for the url
-      to : ''
+      to : 'https://facebook.com/thefacesafrica'
     },
     {
       id: 2,
       name: <BsTwitter />,
       //this is for the url
-      to : ''
+      to : 'https://twitter.com/witwater'
     },
     {
       id: 3,
       name: <BsInstagram />,
       //this is for the url
-      to : ''
+      to : 'https://instagram.com/thefacesafrica'
     },
     {
       id: 4,
@@ -45,13 +45,13 @@ const Header = () =>
       id: 5,
       name: <BsYoutube />,
       //this is for the url
-      to : ''
+      to : 'https://youtube.com/@TheFacesAfricaStore'
     },
     {
       id: 6,
       name: <BsEnvelope />,
       // this is the url
-      to : ''
+      to : 'https://gmail.com/thewitwater@gmail.com'
     }
   ]
   return (
@@ -114,7 +114,7 @@ const Header = () =>
                       <Link to='../' className='nav-link text-capitalize'>Home</Link>
                     </NavLink>
                     <NavLink eventKey={ 2 }>
-                      <Link to='contact' className='nav-link text-capitalize'>Contact Us</Link>
+                      <Link to='../contact' className='nav-link text-capitalize'>Contact Us</Link>
                     </NavLink>
                     <NavLink className='disabled' eventKey={ 3 }>
                       <Link className='nav-link text-capitalize disabled'>Copyright</Link>
@@ -143,7 +143,7 @@ const Header = () =>
                 <hr className="mx-auto w-25 mt-5" />
                 <Row className="text-center">
                   <NavLink eventKey={ 1 }>
-                      <Link to='' className='nav-link text-capitalize'>about witwater.com</Link>
+                      <Link to='../about' className='nav-link text-capitalize'>about witwater.com</Link>
                     </NavLink>
                     <NavLink eventKey={ 5 }>
                       <Link to='' className='nav-link text-capitalize'>privacy statement</Link>

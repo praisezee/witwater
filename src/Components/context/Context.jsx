@@ -110,6 +110,11 @@ export const MainProvider = ({children}) =>
     }
     setIsLoggedIn( true )
     try {
+      await axios.post('/verify-mail',JSON.stringify({email}),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        } )
       await axios.post(
         REGISTER_URL,
         JSON.stringify(
@@ -122,11 +127,6 @@ export const MainProvider = ({children}) =>
           withCredentials: true
         }
       )
-      await axios.post('/verify-mail',JSON.stringify({email}),
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        })
       setSuccess( true )
       setName( '' )
       setGender( 'Select an option' )
