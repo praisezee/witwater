@@ -15,7 +15,10 @@ const Contact = () =>
   const submit = async () =>
   {
     try {
-      await axios.post( '/contact', JSON.stringify( { surname, firstname, phoneNumber, email, message } ) )
+      await axios.post( '/contact', JSON.stringify( { surname, firstname, phoneNumber, email, message } ), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials:true
+      })
       setStatus( true )
       setSurname('')
       setFirstname('')
