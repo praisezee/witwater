@@ -77,9 +77,9 @@ export const MainProvider = ({children}) =>
     try {
       await axios.post( '/verify-code', JSON.stringify( email, code ),
         {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        } )
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true
+      } )
       navigate( '../login' )
       setEmail('')
       setCode('')

@@ -16,7 +16,12 @@ const Contact = () =>
   {
     try {
       await axios.post( '/contact', JSON.stringify( { surname, firstname, phoneNumber, email, message } ) )
-      setStatus(true)
+      setStatus( true )
+      setSurname('')
+      setFirstname('')
+      setPhoneNumber('')
+      setEmail('')
+      setMessage('')
     } catch (err) {
       if (!err?.response) {
         setStatus('no server response')
@@ -78,7 +83,7 @@ const Contact = () =>
         </div>
       ) : (
           <div className="vh-75 center">
-            <p className='border eounded shadow-sm p-5'>Thank you for contacting witwater</p>
+            <p className='border eounded shadow-sm p-5 '>Thank you for contacting witwater</p>
           </div>
       )}
     </div>

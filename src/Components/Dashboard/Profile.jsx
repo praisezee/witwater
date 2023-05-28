@@ -10,6 +10,7 @@ import axios from '../api/register';
 import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import EditProfile from './EditProfile';
+import Verify from './Verify';
 
 const Profile = () =>
 {
@@ -22,17 +23,36 @@ const Profile = () =>
   const [loading, setLoading]= useState(true)
   const [ image, setImage ] = useState( auth.src !== '' ? auth.src : auth.src === '' && auth.gender.toLowerCase() === 'male' ? male : auth.src === '' && auth.gender.toLowerCase() === 'female' ? female : null )
   const [editForm, setEditForm] = useState(false)
-  const [url, setUrl] = useState(image)
+  const [ url, setUrl ] = useState( image )
+  const [verify, setVerify] = useState(false)
   const handleClose = () =>
   {
     setModal( false );
-    setUrl(null)
+    setUrl(image)
   }
   const handleHide = () =>
   {
     setEditForm( false );
   }
 
+  const hideVerify = async () =>
+  {
+    setVerify( false )
+    
+  }
+
+  const showVerify = async () =>
+  {
+    try {
+      await axios.post( '/verify-mail', JSON.stringify( { email: auth.email } ),{
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true
+      } )
+      setVerify(true)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   useEffect( () =>
   {
     const getSinglePost = async (  ) =>
@@ -124,11 +144,14 @@ const Profile = () =>
               <ListGroupItem className='h6 text-capitalize text-center'>State: {auth.state}</ListGroupItem>
               <ListGroupItem className='h6 text-capitalize text-center'>City: {auth.city}</ListGroupItem>
             </ListGroup>
-            <div className='w-100 d-flex my-3'>
+            <div className='w-100 d-flex justify-content-between my-3'>
               <Button onClick={()=> setEditForm(true)} variant='outline-primary' >
                 Edit info
               </Button>
-              <Button variant='outline-danger ms-auto' onClick={deleteAccount} >
+              { auth.isVerified ? null : (
+                <Button variant='outline-info' onClick={showVerify}>Verify Account</Button>
+              )}
+              <Button variant='outline-danger' onClick={deleteAccount} >
                 Delete account
               </Button>
             </div>
@@ -147,7 +170,8 @@ const Profile = () =>
           }
         </Row>
       </Container>
-      <EditProfile show={ editForm } auth={auth} hide={handleHide} />
+      <EditProfile show={ editForm } auth={ auth } hide={ handleHide } />
+      <Verify show={ verify } auth={auth} hide={hideVerify} />
       <Modal show={ modal } onHide={ handleClose } centered >
         <ModalHeader>
           <div className='d-flex justify-content-between w-100'>

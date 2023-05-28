@@ -19,10 +19,12 @@ const Register = () =>
     { success ? (
       <Container fluid>
         <Row className='border rounded py-5  w-75 mx-auto' >
-          <p className="text-uppercase text-center">Registration successful</p>
-              <p className="h6">Your registration was successful. please check your email and enter the verification code sent</p>
-              <FormControl value={ code } onChange={ ( e ) => setCode( e.target.value ) } />
-              <Button variant='outline-primary' onClick={verifyEmail}>Verify</Button>
+              <Col className='mx-auto' xs={10} md={6} lg={4}>
+                <p className="text-uppercase text-center">Registration successful</p>
+                <p className="h6">Your registration was successful. please check your email and enter the verification code sent</p>
+                <FormControl value={ code } onChange={ ( e ) => setCode( e.target.value ) } />
+                <Button variant='outline-primary' onClick={verifyEmail}>Verify</Button>
+              </Col>
         </Row>
       </Container>
     )
@@ -166,7 +168,7 @@ const Register = () =>
                 <Spinner as='span' size='sm' role='status' aria-hidden='true'/> loading
               </Button>
               :
-              <Button className='ms-auto h-3 text-capitalize fw-bold' disabled={!validEmail || !validMatch || !validPwd ? true : false}  onClick={handleRegister}>
+              <Button className='ms-auto h-3 text-capitalize fw-bold'  onClick={handleRegister}>
                 Register
               </Button>
           }
