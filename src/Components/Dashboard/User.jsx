@@ -99,7 +99,7 @@ const User = () =>
           <p className="h5">{`${user.name} posts` }</p>
           { userPost.length ? 
             userPost.map( post => (
-              <MyPost post={ post } />
+              <MyPost post={ post } auth={user}/>
             ) )
             : (
               <p className="text-captialize text-center">you have no post uploaded</p>
