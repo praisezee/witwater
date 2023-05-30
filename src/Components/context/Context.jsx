@@ -80,7 +80,7 @@ export const MainProvider = ({children}) =>
         headers: { "Content-Type": "application/json" },
         withCredentials: true
       } )
-      navigate( '../login' )
+      navigate( '../auth/login' )
       setEmail('')
       setCode('')
     } catch (err) {
