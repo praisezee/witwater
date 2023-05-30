@@ -28,6 +28,11 @@ const SinglePost = () =>
 
   }, [] )
 
+  useEffect( () =>
+  {
+    getComment( id )
+  },[comments])
+
   const handleSubmit = async () =>
   {
     try {
