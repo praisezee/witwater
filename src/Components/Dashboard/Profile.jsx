@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import EditProfile from './EditProfile';
 import Verify from './Verify';
+import Skeleton from '../Skeleton'
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () =>
@@ -89,7 +90,7 @@ const Profile = () =>
 
   const handleEdit = () =>
   {
-    if ( !subscribe ) {
+    if ( !subscribe?.length ) {
       navigate('../subscribe')
     } else {
       setEditForm(true)
@@ -171,7 +172,10 @@ const Profile = () =>
         <hr />
         <Row className='mt-4'>
           <p className="h5">My posts</p>
-          { myPosts.length ? 
+          { loading && (
+            <Skeleton/>
+          )}
+          { !loading && myPosts.length ? 
             myPosts.map( post => (
               <MyPost post={ post } key={post._id} auth={auth} />
             ) )

@@ -80,6 +80,10 @@ const Flutterwave = () =>
         Subscribed()
         closePaymentModal()
         navigate( from, { replace: true } )
+      },
+      onClose: () =>
+      {
+        navigate('../subscribe')
       }
     })
     
@@ -93,6 +97,10 @@ const Flutterwave = () =>
         Subscribed()
         closePaymentModal()
         navigate( from, { replace: true } )
+      },
+      onClose: () =>
+      {
+        navigate('../subscribe')
       }
     })
     
@@ -106,6 +114,10 @@ const Flutterwave = () =>
         Subscribed()
         closePaymentModal()
         navigate( from, { replace: true } )
+      },
+      onClose: () =>
+      {
+        navigate('../subscribe')
       }
     })
     
