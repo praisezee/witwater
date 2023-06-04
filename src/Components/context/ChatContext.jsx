@@ -1,35 +1,25 @@
 import { createContext, useState, useRef, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { io } from 'socket.io-client';
 import useAuth from "../../hooks/useAuth";
+import useDashboardContext from "../../hooks/useDashboardContext";
 
 const ChatContext = createContext( {} );
-const SOCKET_URL = 'wss://witwater-server.onrender.com'
 //const DEV_SOCKET = 'ws://localhost:3500'
 export const ChatProvider = ( { children } ) =>
 {
-  const {auth, setErrMsg, errRef} = useAuth()
+  const { auth, setErrMsg, errRef } = useAuth()
+  const {setArrivalMessage, arivalMessage, socket} = useDashboardContext()
   const axiosPrivate = useAxiosPrivate()
 
   const [ conversations, setConversations ] = useState( [] )
   const [ currentChat, setCurrentChat ] = useState( null )
   const [ messages, setMessages ] = useState( [] )
   const [ newMessage, setNewMessage ] = useState( '' )
-  const [ arivalMessage, setArrivalMessage ] = useState( null )
   const [friend, setFriend] = useState({})
   const scrollRef = useRef()
-  const socket = useRef( )
 
-useEffect( () =>{
-  socket.current = io( SOCKET_URL )
-  socket.current.on("getMessage", (data) =>{
-    setArrivalMessage({
-      sender : data.senderId,
-      text: data.text,
-      createdAt: Date.now()
-})
-})
-},[])
+
+
   
     useEffect( () =>
   {
@@ -38,14 +28,7 @@ useEffect( () =>{
       setMessages( prev => [ ...prev, arivalMessage ] )
   }, [arivalMessage, currentChat])
   
-  useEffect( () =>
-  {
-    socket.current.emit( 'addUser', auth.id );
-    socket.current.on( 'getUsers', users =>
-    {
-      console.log(users)
-    })
-  }, [auth.id] )
+  
   useEffect( () =>
   {
     let isMounted = true

@@ -17,6 +17,7 @@ export const MainProvider = ({children}) =>
   const [ message, setMessage ] = useState( '' );
   const [ image, setImage ] = useState( '' )
   const [ auth, setAuth ] = useState( {} )
+  const [subscribe, setSubscribe] = useState(null)
   const [user, setUser] = useState([])
   
   const navigate = useNavigate()
@@ -217,7 +218,7 @@ return;
 
   return (
     <MainContext.Provider value={ {
-      title,message,setMessage,setTitle, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth,user, getUsers,isLoggedIn,persist, setPersist, verifyEmail, code, setCode
+      title,message,setMessage,setTitle, image, setImage, errMsg, errRef,  success, name, setName, gender, setGender, role, setRole, state, setState, city, setCity, email,setEmail, phoneNumber, setPhoneNumber, password, setPassword, confirm, setConfirm, handleRegister, validPwd, validEmail,validMatch,pwdFocus,setPwdFocus, matchFocus, setMatchFocus, setEmailFocus, emailFocus, setErrMsg, handleLogin, auth, setAuth,user, getUsers,isLoggedIn,persist, setPersist, verifyEmail, code, setCode, subscribe, setSubscribe
     }}>
       {children}
     </MainContext.Provider>

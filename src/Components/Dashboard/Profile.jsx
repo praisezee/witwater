@@ -11,13 +11,15 @@ import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import EditProfile from './EditProfile';
 import Verify from './Verify';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () =>
 {
   const axiosPrivate = useAxiosPrivate()
 
-  const { auth, setAuth } = useAuth()
-  const {posts,deleteAccount} = useDashboardContext()
+  const navigate = useNavigate()
+  const { auth, setAuth, subscribe } = useAuth()
+  const {deleteAccount} = useDashboardContext()
   const [myPosts, setMyposts] = useState([])
   const [ modal, setModal ] = useState( false )
   const [loading, setLoading]= useState(true)
@@ -68,7 +70,7 @@ const Profile = () =>
     }
     
     getSinglePost()
-  },[auth])
+  },[auth, axiosPrivate])
   const upload = async () =>
   {
     try {
@@ -83,6 +85,15 @@ const Profile = () =>
       } catch (err) {
         console.log(err)
       }
+  }
+
+  const handleEdit = () =>
+  {
+    if ( !subscribe ) {
+      navigate('../subscribe')
+    } else {
+      setEditForm(true)
+    }
   }
 
   const onImgChange = ( e ) =>
@@ -119,7 +130,7 @@ const Profile = () =>
           <Col xs={12} md={4} className='my-auto'>
             <div className="d-flex">
               <div className="rounded-circle w-50 mx-auto border border-info position-relative">
-                <img className='img-fluid w-100 rounded-circle' src={image} alt="profile" />
+                <img className='img-fluid rounded-circle' src={image} alt="profile" />
                 <span className='position-absolute top-100 start-100 translate-middle text-dark badge fs-1'>
                   <BsCameraFill role='button' onClick={()=>setModal(true)
                   }/>
@@ -145,7 +156,7 @@ const Profile = () =>
               <ListGroupItem className='h6 text-capitalize text-center'>City: {auth.city}</ListGroupItem>
             </ListGroup>
             <div className='w-100 d-flex justify-content-between my-3'>
-              <Button onClick={()=> setEditForm(true)} variant='outline-primary' >
+              <Button onClick={handleEdit} variant='outline-primary' >
                 Edit info
               </Button>
               { auth.isVerified ? null : (
@@ -160,12 +171,14 @@ const Profile = () =>
         <hr />
         <Row className='mt-4'>
           <p className="h5">My posts</p>
-          { posts.length ? 
+          { myPosts.length ? 
             myPosts.map( post => (
               <MyPost post={ post } key={post._id} auth={auth} />
             ) )
             : (
-              <p className="text-captialize text-center">you have no post uploaded</p>
+              <div className="vh-50 d-flex justify-content-center align-items-center">
+                <p className="text-capitalize p-4 shadow border rounded text-center">you have no post uploaded</p>
+              </div>
             )
           }
         </Row>

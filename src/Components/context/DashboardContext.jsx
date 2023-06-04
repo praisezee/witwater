@@ -1,18 +1,21 @@
-import { createContext, useState} from "react";
+import { createContext, useEffect, useState} from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { io } from 'socket.io-client';
 
 const DashboardContext = createContext( {} );
 
 const POST_URL = '/posts'
 const USER_URL = '/user'
+const SOCKET_URL = 'wss://witwater-server.onrender.com'
 
 export const DashboardProvider = ( { children } ) =>
 {
 
 
-  const {auth, setErrMsg, errRef,setAuth} = useAuth()
+  const {auth, setErrMsg, errRef,setAuth, setSubscribe} = useAuth()
   const axiosPrivate = useAxiosPrivate()
   const [posts, setPosts] = useState([])
   const [ title, setTitle ] = useState( '' );
@@ -24,7 +27,41 @@ export const DashboardProvider = ( { children } ) =>
   const [ comments, setComments ] = useState( [] )
   const [newComment, setNewComment] = useState('')
   const navigate = useNavigate()
+  const socket = useRef()
+    const [ arivalMessage, setArrivalMessage ] = useState( null )
+  
 
+  useEffect( () =>
+  {
+    socket.current = io( SOCKET_URL )
+  socket.current.on("getMessage", (data) =>{
+    setArrivalMessage({
+      sender : data.senderId,
+      text: data.text,
+      createdAt: Date.now()
+})
+})
+    const Subscribed = async() =>
+    {
+      try {
+        const response = await axiosPrivate.post( '/subscription', JSON.stringify( { email: auth.email } ) )
+        const result = response.data
+        setSubscribe(result)
+    } catch (err) {
+      console.log(err)
+      }
+    }
+    Subscribed()
+  }, [] )
+  
+  useEffect( () =>
+  {
+    socket.current.emit( 'addUser', auth.id );
+    socket.current.on( 'getUsers', users =>
+    {
+      console.log(users)
+    })
+  }, [auth.id] )
 
 
 
@@ -36,10 +73,13 @@ export const DashboardProvider = ( { children } ) =>
         POST_URL,
         JSON.stringify( { title, post: message, id: auth.id } )
       );
-      await response.data
+      const result = response.data
+      setPosts([result,...posts])
       setTitle( '' )
-      setMessage('')
-      navigate('../dashboard')
+      setMessage( '' )
+      
+      navigate( '../dashboard' )
+      
     } catch (err) {
       if ( !err?.response ) {
         setErrMsg('No server response')
@@ -179,7 +219,7 @@ export const DashboardProvider = ( { children } ) =>
   
   return (
     <DashboardContext.Provider value={ {
-      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount, getUserPost, userPost, getUser, user,setUser, getSinglePost, singlePost, isLoading, addConversation, setNewComment, comments, setComments, newComment,sendComment, getComment,
+      title,message,setMessage,setTitle,posts, sendPost, errRef, setErrMsg, auth, setAuth, getPost,deleteAccount, getUserPost, userPost, getUser, user,setUser, getSinglePost, singlePost, isLoading, addConversation, setNewComment, comments, setComments, newComment,sendComment, getComment,setArrivalMessage, arivalMessage, socket
     }}>
       {children}
     </DashboardContext.Provider>

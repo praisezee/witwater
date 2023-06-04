@@ -13,6 +13,10 @@ body{
       display: flex;
 }
 
+.h-screen{
+      min-height: 100dvh;
+}
+
 .App{
       display: flex;
       flex-direction: column;

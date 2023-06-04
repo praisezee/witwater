@@ -25,6 +25,8 @@ import User from "./Components/Dashboard/User";
 import SinglePost from "./Components/Dashboard/SinglePost";
 import About from "./Components/About";
 import Contact from "./Components/Home/Contact";
+import Flutterwave from "./Components/Dashboard/Payment/Flutterwave";
+import RequireFlutter from "./Components/RequireFlutter";
 
 
 const App= ()=> {
@@ -62,15 +64,18 @@ const App= ()=> {
             <DashboardLayout /> </DashboardProvider>}>
             <Route index element={ <DashHome /> } />
             <Route path=":id" element={ <User /> } />
-            <Route path="post">
-              <Route path=":id" element={ <SinglePost/> } />
+            <Route path="subscribe" element={ <Flutterwave /> } />
+            <Route element={<RequireFlutter/>}>
+              <Route path="post">
+                <Route path=":id" element={ <SinglePost/> } />
+              </Route>
+              <Route path="chat" element={
+                <ChatProvider>
+                  <Chat/>
+                </ChatProvider>
+            } />
             </Route>
           <Route path="new-post" element={ <NewPost /> } />
-            <Route path="chat" element={
-              <ChatProvider>
-                <Chat/>
-              </ChatProvider>
-          } />
             <Route path="profile" element={ <Profile/> } />
         </Route>
       </Route>
