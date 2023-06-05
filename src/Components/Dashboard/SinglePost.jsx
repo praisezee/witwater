@@ -28,10 +28,10 @@ const SinglePost = () =>
 
   }, [] )
 
-  useEffect( () =>
-  {
-    getComment( id )
-  },[comments])
+  // useEffect( () =>
+  // {
+  //   getComment( id )
+  // },[comments])
 
   const handleSubmit = async () =>
   {
@@ -78,7 +78,7 @@ const SinglePost = () =>
             <Row className='flex-grow-2 overflow-auto'>
               { comments.length ?
                   comments.map( comment => (
-                    <Comment comment={ comment } />
+                    <Comment comment={ comment } postSenderId={user} />
               ) ) : (
                   <div className="vh-50 center">
                     <p className='rounded border shadow-sm p-5'>No comment to display</p>

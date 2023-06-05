@@ -3,6 +3,7 @@ import { BsSend,BsArrowLeftCircle } from 'react-icons/bs'
 import Conversation from './chat/Conversation';
 import Message from './chat/Message';
 import useChatContext from '../../hooks/useChatContext';
+import User from './User';
 
 
 
@@ -50,10 +51,17 @@ const Chat = () =>
                     </p>
                   </div>
               </div>
-              { messages.map( message => 
+              { messages.length ? messages.map( message => 
                 <div ref={scrollRef}>
                   <Message message={ message }  own={message.sender === auth.id} handleClick={handleClick} />
                 </div>
+                ) : (
+                  <div className="d-flex h-100 align-items-center">
+                    <Alert variant='info' className='my-4 mx-auto py-5 fs-4 fw-bold'>
+                      You are now connected to {friend.name}
+                      Start a new chat 
+                    </Alert>
+                  </div>
                 )
               }
             </div>
@@ -111,10 +119,17 @@ const Chat = () =>
                     </p>
                   </div>
               </div>
-              { messages.map( message => 
+              { messages.length ? messages.map( message => 
                 <div ref={scrollRef}>
                   <Message message={ message } own={message.sender === auth.id} handleClick={handleClick} />
                 </div>
+                ) : (
+                  <div className="h-100 center">
+                    <Alert variant='info'>
+                      You are now connected to {friend.name}
+                      Start a new chat 
+                    </Alert>
+                  </div>
                 )
               }
             </div>

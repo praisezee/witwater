@@ -28,6 +28,11 @@ const Profile = () =>
   const [editForm, setEditForm] = useState(false)
   const [ url, setUrl ] = useState( image )
   const [verify, setVerify] = useState(false)
+
+    const monthly = subscribe?.data.map((s)=> s.plan ==='36573' && s.status === 'active')
+  const biannual = subscribe?.data.map((s)=> s.plan ==='36577' && s.status === 'active')
+  const annual = subscribe?.data.map( ( s ) => s.plan === '36578' && s.status === 'active' )
+
   const handleClose = () =>
   {
     setModal( false );
@@ -90,7 +95,7 @@ const Profile = () =>
 
   const handleEdit = () =>
   {
-    if ( !subscribe?.length ) {
+    if ( !monthly.length || !biannual.length || !annual.length ) {
       navigate('../subscribe')
     } else {
       setEditForm(true)
@@ -116,14 +121,6 @@ const Profile = () =>
     }
   }
 
-  // useEffect( () =>
-  // {
-  //   const imgUrl = URL.createObjectURL(selectedImage)
-  //   setUrl(imgUrl)
-
-  //   return () => URL.revokeObjectURL(imgUrl)
-  // },[selectedImage])
-  
   return (
     <main className='w-100'>
       <Container fluid>

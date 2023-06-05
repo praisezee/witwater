@@ -3,10 +3,11 @@ import useAuth from './useAuth'
 
 const useLogout = () =>
 {
-  const { setAuth } = useAuth()
+  const { setAuth, setSubscribe } = useAuth()
   const logout = async () =>
   {
     setAuth( {} );
+    setSubscribe( null );
     try {
       const response = await axios( '/logout', {
         withCredentials: true
