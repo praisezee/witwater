@@ -24,13 +24,13 @@ const UserDetails = ({user, id, modal}) =>
 
 
   return (
-    <div className="d-flex justify-content-between">
-      <Link to={auth.id === user?.id ? '../../profile' : `../../${user?.id}`} className="d-flex nav-link">
+    <div className="d-flex">
+      <Link to={auth.id === user?.id ? '../../profile' : `../../${user?.id}`} className="d-flex nav-link flex-grow-1">
         <div className="rounded-circle w-5 mx-auto border border-info">
-        <img src={user?.src !== '' ? user?.src :user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female'? female : null} alt="profile" className='img-fluid w-100 rounded-circle' />
+          <img src={user.src !== '' ? user?.src :user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female'? female : null} alt="" className='img-fluid w-100 rounded-circle' />
         </div>
         <div className="flex-grow-1 my-auto ms-2">
-          <p className="h6 text-capitalize">{ user?.name }</p>
+          <p className="h6 text-capitalize">{ auth?.name }</p>
         </div>
       </Link>
       <div className={ auth.id === user?.id ? 'd-flex ' : 'd-none' }>

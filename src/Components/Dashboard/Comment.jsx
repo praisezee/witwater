@@ -56,7 +56,7 @@ const Comment = ( { comment,postSenderId } ) =>
       (
         <Col xs={12} className='border border-primary-subtle rounded shadow-sm my-2 p-2'>
           <div className="d-flex justify-content-between">
-          <Link to={auth.id === user?.id ? '../../profile' : `../../${user?.id}`} className="d-flex nav-link">
+          <Link to={auth.id === user?.id ? '../../profile' : `../../${user?.id}`} className="d-flex nav-link flex-grow-1">
             <div className="rounded-circle w-5 mx-auto border border-info">
             <img src={user?.src !== '' ? user?.src :user?.src === '' && user?.gender.toLowerCase() === 'male' ? male : user?.src === '' && user?.gender.toLowerCase() === 'female'? female : null} alt="profile" className='img-fluid w-100 rounded-circle' />
             </div>

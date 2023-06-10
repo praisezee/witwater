@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import useAuth from '../../hooks/useAuth'
-import { Button, Col, Container, Form, FormControl, FormLabel, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader, Row } from 'react-bootstrap';
+import { Button, Col, Container,  ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import male from '../../assets/male.jpg'
 import female from '../../assets/female.jpg'
 import useDashboardContext from '../../hooks/useDashboardContext'
 import MyPost from './MyPost';
-import { BsCameraFill } from 'react-icons/bs'
 import axios from '../api/register';
 import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -13,6 +12,8 @@ import EditProfile from './EditProfile';
 import Verify from './Verify';
 import Skeleton from '../Skeleton'
 import { useNavigate } from 'react-router-dom';
+import { BsCameraFill } from 'react-icons/bs'
+import ProfileEdit from './ProfileEdit';
 
 const Profile = () =>
 {
@@ -26,7 +27,7 @@ const Profile = () =>
   const [loading, setLoading]= useState(true)
   const [ image, setImage ] = useState( auth.src !== '' ? auth.src : auth.src === '' && auth.gender.toLowerCase() === 'male' ? male : auth.src === '' && auth.gender.toLowerCase() === 'female' ? female : null )
   const [editForm, setEditForm] = useState(false)
-  const [ url, setUrl ] = useState( image )
+  const [ url, setUrl ] = useState( null )
   const [verify, setVerify] = useState(false)
 
     const monthly = subscribe?.data.map((s)=> s.plan ==='36573' && s.status === 'active')
@@ -36,7 +37,7 @@ const Profile = () =>
   const handleClose = () =>
   {
     setModal( false );
-    setUrl(image)
+    setUrl(null)
   }
   const handleHide = () =>
   {
@@ -102,24 +103,30 @@ const Profile = () =>
     }
   }
 
-  const onImgChange = ( e ) =>
+  // const onImgChange = ( e ) =>
+  // {
+    
+  //   setFileToBase(e)
+
+
+  //   // console.log(imgUrl)
+  // }
+
+  // const setFileToBase = ( file ) =>
+  // {
+  //   const reader = new FileReader()
+  //   reader.readAsDataURL( file )
+  //   reader.onloadend = () =>
+  //   {
+  //     setUrl(reader.result)
+  //   }
+  // }
+  const onImgChange = view =>
   {
-    const img = e.target.files[ 0 ]
-    setFileToBase(img)
-
-
-    // console.log(imgUrl)
+    setUrl(view)
   }
 
-  const setFileToBase = ( file ) =>
-  {
-    const reader = new FileReader()
-    reader.readAsDataURL( file )
-    reader.onloadend = () =>
-    {
-      setUrl(reader.result)
-    }
-  }
+  
 
   return (
     <main className='w-100'>
@@ -127,13 +134,16 @@ const Profile = () =>
         <Row>
           <Col xs={12} md={4} className='my-auto'>
             <div className="d-flex">
-              <div className="rounded-circle w-50 mx-auto border border-info position-relative">
-                <img className='img-fluid rounded-circle' src={image} alt="profile" />
+              <div className='position-relative mx-auto'>
+                <div className="rounded-circle mx-auto border border-info">
+                  <img className='img-fluid rounded-circle' src={image} alt="profile" />
+                </div>
                 <span className='position-absolute top-100 start-100 translate-middle text-dark badge fs-1'>
                   <BsCameraFill role='button' onClick={()=>setModal(true)
                   }/>
                 </span>
               </div>
+              
               <div className='my-auto flex-grow-1 d-block d-md-none mx-2'>
                 <p className="h5 text-primary text-center mx-auto">{ auth.name }</p>
                 <p className="text-center text-muted">{ auth.email }</p>
@@ -186,31 +196,7 @@ const Profile = () =>
       </Container>
       <EditProfile show={ editForm } auth={ auth } hide={ handleHide } />
       <Verify show={ verify } auth={auth} hide={hideVerify} />
-      <Modal show={ modal } onHide={ handleClose } centered >
-        <ModalHeader>
-          <div className='d-flex justify-content-between w-100'>
-            <Button onClick={handleClose} variant='outline-danger'>
-            Cancle
-          </Button>
-          <Button variant='outline-primary' onClick={upload}>
-            Save
-          </Button>
-          </div>
-        </ModalHeader>
-        <ModalBody>
-          <div className=" w-100 mx-auto position-relative">
-                <img className='img-fluid rounded-circle border border-info ' src={ url } alt="profile" />
-                <span className='position-absolute top-100 start-100 translate-middle text-dark badge fs-1'>
-                  <Form>
-                    <FormLabel htmlFor='profile' role='button' className='fs-1' >
-                      <BsCameraFill className='fs-1' />
-                    </FormLabel>
-                    <FormControl type='file' name='profile' id='profile' className='visually-hidden' accept='image/*' onChange={onImgChange}/>
-                  </Form>
-                </span>
-              </div>
-        </ModalBody>
-      </Modal>
+      <ProfileEdit modal={modal} handleClose={handleClose} upload={upload} url={url} onImgChange={onImgChange} />
     </main>
   )
 }
