@@ -6,6 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { MainProvider } from './Components/context/Context'
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
