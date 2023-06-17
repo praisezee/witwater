@@ -11,12 +11,12 @@ import Contact from './Home/Contact';
 const Home = () => {
   return (
     <Container fluid className='px-3'>
-      <Hero />
+      {/*<Hero />*/}
       <Trending />
       <Talent />
       <Socials />
       <Choose />
-      <Testimonies />
+      {/*<Testimonies />/*}
       <Contact/>
     </Container>
   )
