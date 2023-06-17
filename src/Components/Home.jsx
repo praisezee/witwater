@@ -16,7 +16,7 @@ const Home = () => {
       <Talent />
       <Socials />
       <Choose />
-      {/*<Testimonies />/*}
+      {/*<Testimonies />*/}
       <Contact/>
     </Container>
   )
